@@ -1,0 +1,12 @@
+[
+    {
+        "id": 2,
+        "nome": "Bruno Bezerra",
+        "data_nascimento": "17/03/1997",
+        "telefone": "abcde",
+        "cpf": "33333333333",
+        "sexo": "masculino",
+        "email": "bruno@bezerra.com",
+        "avaliacao_loja": "boa"
+    }
+]
