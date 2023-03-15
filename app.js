@@ -4,6 +4,7 @@ const app = express()
 app.set('view engine', 'ejs')
 const router = require('./router');
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(router)
 

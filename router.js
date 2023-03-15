@@ -5,4 +5,6 @@ const router = express.Router()
 
 router.get('/', PagesController.showIndex)
 
+router.post('/created', PagesController.store)
+
 module.exports = router
