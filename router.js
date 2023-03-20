@@ -9,6 +9,10 @@ router.get('/cadastro', PagesController.showCadastro)
 
 router.get('/adm', PagesController.showAdm)
 
+router.get('/finalizado', PagesController.showFinalizado)
+
 router.post('/created', PagesController.storeIndex)
+
+router.post('/createdForm', PagesController.storeForm)
 
 module.exports = router
