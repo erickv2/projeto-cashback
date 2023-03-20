@@ -1,6 +1,7 @@
 const path = require('path');
 const idu = 2;
 const { Usuarios } = require('../database/models')
+const { Compras } = require('../database/models')
 
 const PagesController = {
     showIndex: (req, res)=>{
@@ -11,11 +12,13 @@ const PagesController = {
     },
     store: async (req, res)=>{
 
-        let usuario = {
+    await Usuarios.create({
             telefone: req.body.telefone
-        }
-        
-        await Usuarios.create(usuario)
+        })
+
+    await Compras.create({
+            valor: req.body.valorCompra
+        })
 
         res.redirect('/') 
     }
