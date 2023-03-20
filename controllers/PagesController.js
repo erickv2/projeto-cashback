@@ -16,7 +16,7 @@ const PagesController = {
 
         return res.render('adm', {usuario})
     },
-    store: async (req, res)=>{
+    storeIndex: async (req, res)=>{
 
     await Usuarios.create({
             telefone: req.body.telefone
@@ -27,6 +27,9 @@ const PagesController = {
         })
 
         res.redirect('/') 
+    },
+    storeForm: async (req, res) =>{
+        
     }
 }
 
