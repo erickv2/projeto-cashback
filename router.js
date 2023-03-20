@@ -7,6 +7,8 @@ router.get('/', PagesController.showIndex)
 
 router.get('/cadastro', PagesController.showCadastro)
 
+router.get('/adm', PagesController.showAdm)
+
 router.post('/created', PagesController.store)
 
 module.exports = router
