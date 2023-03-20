@@ -10,6 +10,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
     crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+    integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- <script src="teste.js"></script> -->
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -24,59 +28,102 @@
           <div id="carouselExampleControls" class="carousel slide" data-bs-interval="false" data-bs-touch="false">
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <div class="w-50 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel">
                   <label for="nome" class="form-label">Nome:</label>
-                  <input type="text" class="form-control" id="nome" placeholder="Digite seu nome">
+                  <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
+                  <input type="submit" id="validate" />
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="w-50 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel">
                   <label for="telefone" class="form-label">Telefone:</label>
                   <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="w-50 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel">
                   <label for="cpf" class="form-label">CPF:</label>
                   <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF">
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="w-50 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel">
                   <label for="email" class="form-label">Email:</label>
                   <input type="email" class="form-control" id="email" placeholder="Digite seu email">
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="w-50 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel">
                   <label for="sexo" class="form-label">Sexo:</label>
                   <select class="form-select" id="sexo">
                     <option selected>Selecione seu sexo</option>
                     <option value="masculino">Masculino</option>
                     <option value="feminino">Feminino</option>
+                    <option value="feminino">Outros</option>
                   </select>
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="w-50 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel">
                   <label for="data_nascimento" class="form-label">Data de nascimento:</label>
-                  <input type="date" class="form-control" id="data_nascimento">
+                  <input type="text" class="form-control" id="data_nascimento" placeholder="00/00/0000">
                 </div>
               </div>
-            </div>
-            <div class="d-flex align-items-center flex-column">
-              <button class="btn btn-primary d-flex btn-block w-25 mb-5 justify-content-center" id="proximo"
-                data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                <img src="img/right-arrow.png" alt="" id="setadireita"> PRÓXIMO
-              </button>
-            </div>
+              <div class="carousel-item">
+                <div class="w-75 mb-5" id="formcarousel">
+                  <div class="form-group text-center mb-5">
+                    Seu cadastro está completo!
+                    Você já pode usar seu cashback.
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
 
-            <div class="d-flex align-items-center flex-column">
-              <button class="btn btn-primary d-flex btn-block w-25 mb-5 justify-content-center" id="prev"
-                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <div class="w-75 mb-5" id="formcarousel">
 
-                <img src="img/left-arrow.png" alt="" id="setadireita"> VOLTAR
-              </button>
+                  <div class="form-group text-center mb-5">
+                    Seu cadastro está completo!
+                    Você já pode usar seu cashback.
+                  </div>
+
+                  <div class="d-flex align-items-center">
+                    <div class="certo"></div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center flex-column">
+            <button class="btn btn-primary d-flex btn-block w-50 mb-5 justify-content-center" id="proximo"
+              data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <img src="img/right-arrow.png" alt="" id="setadireita"> PRÓXIMO
+
+            </button>
+          </div>
+
+          <div class="d-flex align-items-center flex-column">
+            <button class="btn btn-primary d-flex btn-block w-50 mb-5 justify-content-center" id="enviar">
+              ENVIAR
+            </button>
+          </div>
+
+          <div class="d-flex align-items-center flex-column">
+            <button class="btn btn-primary d-flex btn-block w-50 mb-5 justify-content-center" id="prev"
+              data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+
+              <img src="img/left-arrow.png" alt="" id="setadireita"> VOLTAR
+            </button>
         </form>
 
       </section>
@@ -88,51 +135,115 @@
 </html>
 
 <script>
+
+
+  //seta o index para cada elemento do carousel
   let currentCarouselItem = 0;
-  const nomeInput = document.getElementById('nome');
+  //seta o número total de elementos do carousel - buscar forma de fazer isso automaticamente
+  let maxCarouselItem = 7;
+  //cria constantes para os botões
   const nextBtn = document.getElementById('proximo');
   const prevBtn = document.getElementById('prev');
-  document.getElementById('prev').style.visibility = "hidden"
+  nextBtn.disabled = true;
 
-  // function addcurrent() {
-  //     currentCarouselItem++;
-  //     console.log(currentCarouselItem);
-  // }
+  // testando validação
 
-  // function subcurrent() {
-  //     currentCarouselItem--;
-  //     console.log(currentCarouselItem);
-  // }
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      // fetch all the forms we want to apply custom style
+      var inputs = document.getElementsByClassName('form-control')
 
+      // loop over each input and watch blue event
+      var validation = Array.prototype.filter.call(inputs, function (input) {
 
-  // function eventHandler(event) {
+        input.addEventListener('input', function (event) {
+          // reset
+          nextBtn.disabled = true;
+          input.classList.remove('is-invalid')
+          input.classList.remove('is-valid')
 
-  // }
+          if (input.checkValidity() === false) {
+            input.classList.add('is-invalid')
+            nextBtn.disabled = true;
+          }
+          else {
+            input.classList.add('is-valid');
+            nextBtn.disabled = false;
+          }
+        }, false);
+      });
+    }, false);
+  })()
 
-  nextBtn.addEventListener("click", function(){
+  //evento de clique do botao "próximo"
+  nextBtn.addEventListener("click", function () {
+    // disabilita o botao por 700ms enquanto rola a animação, previne cliques múltiplos que somariam no contador
     document.getElementById("proximo").disabled = true;
-    setTimeout(function(){document.getElementById("proximo").disabled = false;},700)
+    setTimeout(function () { document.getElementById("proximo").disabled = false; }, 700)
+    //adiciona ao contador
     currentCarouselItem = currentCarouselItem + 1;
+    //torna o botão "voltar" visível
     document.getElementById('prev').style.visibility = "visible"
-    if (currentCarouselItem == 5){
-      document.getElementById('proximo').style.visibility = "hidden"
+    //condicional para esconder o "proximo" e aparecer o botão "enviar" quando chega ao último slide
+    if (currentCarouselItem == maxCarouselItem) {
+      document.getElementById('proximo').style.visibility = "collapse"
+      document.getElementById('enviar').style.visibility = "visible"
     }
   }
-    
-  
+
+
   );
-  prevBtn.addEventListener("click", function(){
+  //evento de clique do botao "voltar"
+  prevBtn.addEventListener("click", function () {
     document.getElementById("prev").disabled = true;
-    setTimeout(function(){document.getElementById("prev").disabled = false;},700)
+    setTimeout(function () { document.getElementById("prev").disabled = false; }, 700)
+    //subtrai do contador
     currentCarouselItem = currentCarouselItem - 1;
-    if (currentCarouselItem == 0){
-      document.getElementById('prev').style.visibility = "hidden"
+    //se volta para o primeiro campo do carousel, esconde o botão voltar
+    if (currentCarouselItem == 0) {
+      document.getElementById('prev').style.visibility = "collapse"
     }
-    else if (currentCarouselItem < 5){
+    //se volta do último campo do carousel, esconde o botão enviar e apresenta novamente o botão "próximo"
+    else if (currentCarouselItem < maxCarouselItem) {
+      document.getElementById('enviar').style.visibility = "collapse"
       document.getElementById('proximo').style.visibility = "visible"
     }
 
   });
-    
+
+
+  //inicio do script das estrelas
+
+
+
+  // FODA-SE AS ESTRELAS
+  const stars = document.querySelectorAll('.star');
+  const rating = document.querySelector('#rating');
+
+  stars.forEach((star, index) => {
+    star.addEventListener('click', () => {
+      // marca as estrelas clicadas e desmarca as outras
+      stars.forEach((s, i) => {
+        if (i <= index) {
+          s.classList.add('selected');
+        } else {
+          s.classList.remove('selected');
+        }
+      });
+
+      // atualiza o valor da avaliação
+      rating.value = index + 1;
+    });
+  });
 
 </script>
+
+<!-- INICIO SCRIPT mask  -->
+
+<script>
+  $('#telefone').mask('(00) 00000-0000');
+  $('#cpf').mask('000.000.000-00');
+  $('#data_nascimento').mask('00/00/0000');
+</script>
+
