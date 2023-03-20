@@ -24,6 +24,8 @@ form {
 #enviar {
   /* margin-bottom: 50px; */
   background-color: #ffc00e;
+  font-weight: bold;
+  visibility: collapse;
 }
 
 #resgatar {
@@ -46,6 +48,7 @@ form {
 #prev {
 	background-color: #00a898;
 	font-weight: bold;
+	visibility: collapse;
 }
 
 #jatenhoconta {
@@ -75,12 +78,42 @@ form {
 	margin-right: 10px;
 }
 
-#certo {
-	width: 130px;
-}
 
 #formcarousel {
 	width: 500px;
 	margin-right: auto; 
 	margin-left: auto;
+}
+
+
+.star {
+	width: 40px;
+	height: 40px;
+	background-image: url('../img/star0.png');
+	background-size: cover;
+	display: inline-block;
+	cursor: pointer;
+	justify-items: stretch;
+	margin: auto;
+}
+
+.star.selected {
+	background-image: url('../img/star1.png');
+}
+
+.certo {
+	height: 100px;
+	width: 100px;
+	background-image: url('../img/check.png');
+	background-size: cover;
+	background-position: center;
+	/* https://codepen.io/sosuke/pen/Pjoqqp
+	CSS FILTER GENERATOR para alterar a cor da PNG */
+	filter: invert(59%) sepia(64%) saturate(5939%) hue-rotate(146deg) brightness(96%) contrast(101%);
+	margin: auto;
+	display: inline-block;
+}
+
+#validate {
+	display: none;
 }
