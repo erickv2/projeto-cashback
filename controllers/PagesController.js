@@ -6,6 +6,9 @@ const PagesController = {
     showIndex: (req, res)=>{
         return res.render('index');
     },
+    showCadastro: (req, res)=>{
+        return res.render('cadastro');
+    },
     store: async (req, res)=>{
 
         let usuario = {

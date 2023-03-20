@@ -43,6 +43,11 @@ form {
 	font-weight: bold;
 }
 
+#prev {
+	background-color: #00a898;
+	font-weight: bold;
+}
+
 #jatenhoconta {
 	color: #ffc00e;
 	text-decoration: none;
@@ -62,6 +67,20 @@ form {
 	margin-right: 10px;
 }
 
+#prev img {
+	width: 17px;
+	height: 17px;
+	filter: invert(1);
+	margin-top: 4px;
+	margin-right: 10px;
+}
+
 #certo {
 	width: 130px;
+}
+
+#formcarousel {
+	width: 500px;
+	margin-right: auto; 
+	margin-left: auto;
 }

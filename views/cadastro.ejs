@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Cadastro de Usuário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <!-- <script src="teste.js"></script> -->
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row justify-content-center mt-5">
+      <section class="col-12 colsm-6 col-md-4">
+        <form class="form-container" method="POST" action="/created">
+          <h4 class="text-center mt-4 mb-5" id="bemvindo">BEM VINDO</h4>
+          <div id="carouselExampleControls" class="carousel slide" data-bs-interval="false" data-bs-touch="false">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="w-50 mb-5" id="formcarousel">
+                  <label for="nome" class="form-label">Nome:</label>
+                  <input type="text" class="form-control" id="nome" placeholder="Digite seu nome">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="w-50 mb-5" id="formcarousel">
+                  <label for="telefone" class="form-label">Telefone:</label>
+                  <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="w-50 mb-5" id="formcarousel">
+                  <label for="cpf" class="form-label">CPF:</label>
+                  <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="w-50 mb-5" id="formcarousel">
+                  <label for="email" class="form-label">Email:</label>
+                  <input type="email" class="form-control" id="email" placeholder="Digite seu email">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="w-50 mb-5" id="formcarousel">
+                  <label for="sexo" class="form-label">Sexo:</label>
+                  <select class="form-select" id="sexo">
+                    <option selected>Selecione seu sexo</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                  </select>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="w-50 mb-5" id="formcarousel">
+                  <label for="data_nascimento" class="form-label">Data de nascimento:</label>
+                  <input type="date" class="form-control" id="data_nascimento">
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center flex-column">
+              <button class="btn btn-primary d-flex btn-block w-25 mb-5 justify-content-center" id="proximo"
+                data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <img src="img/right-arrow.png" alt="" id="setadireita"> PRÓXIMO
+              </button>
+            </div>
+
+            <div class="d-flex align-items-center flex-column">
+              <button class="btn btn-primary d-flex btn-block w-25 mb-5 justify-content-center" id="prev"
+                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+
+                <img src="img/left-arrow.png" alt="" id="setadireita"> VOLTAR
+              </button>
+        </form>
+
+      </section>
+    </div>
+  </div>
+</body>
+
+
+</html>
+
+<script>
+  let currentCarouselItem = 0;
+  const nomeInput = document.getElementById('nome');
+  const nextBtn = document.getElementById('proximo');
+  const prevBtn = document.getElementById('prev');
+  document.getElementById('prev').style.visibility = "hidden"
+
+  // function addcurrent() {
+  //     currentCarouselItem++;
+  //     console.log(currentCarouselItem);
+  // }
+
+  // function subcurrent() {
+  //     currentCarouselItem--;
+  //     console.log(currentCarouselItem);
+  // }
+
+
+  // function eventHandler(event) {
+
+  // }
+
+  nextBtn.addEventListener("click", function(){
+    document.getElementById("proximo").disabled = true;
+    setTimeout(function(){document.getElementById("proximo").disabled = false;},700)
+    currentCarouselItem = currentCarouselItem + 1;
+    document.getElementById('prev').style.visibility = "visible"
+    if (currentCarouselItem == 5){
+      document.getElementById('proximo').style.visibility = "hidden"
+    }
+  }
+    
+  
+  );
+  prevBtn.addEventListener("click", function(){
+    document.getElementById("prev").disabled = true;
+    setTimeout(function(){document.getElementById("prev").disabled = false;},700)
+    currentCarouselItem = currentCarouselItem - 1;
+    if (currentCarouselItem == 0){
+      document.getElementById('prev').style.visibility = "hidden"
+    }
+    else if (currentCarouselItem < 5){
+      document.getElementById('proximo').style.visibility = "visible"
+    }
+
+  });
+    
+
+</script>
