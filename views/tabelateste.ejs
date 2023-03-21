@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Exemplo de estrutura da tabela em HTML -->
+<table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% dados.forEach(function(dado) { %>
+        <tr>
+          <td><%= dado.nome %></td>
+          <td><%= dado.email %></td>
+          <td><%= dado.telefone %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  
+</body>
+</html>

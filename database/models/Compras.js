@@ -10,7 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     }) 
 
     Compras.associate = models => {
-        Compras.belongsTo(models.Usuarios)
+        Compras.belongsTo(models.Usuarios, {
+            foreignKey: 'usuarios_id',
+            as: 'usuario'
+        }),
+        Compras.hasOne(models.Cashback, {
+            foreignKey: 'compras_id',
+            as: 'cashback'
+        })
     }
 
     return Compras

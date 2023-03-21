@@ -4,34 +4,48 @@ const { Usuarios } = require('../database/models')
 const { Compras } = require('../database/models')
 
 const PagesController = {
-    showIndex: async (req, res)=>{
+    showIndex: async (req, res) => {
         return res.render('index');
     },
-    showCadastro: (req, res)=>{
+    showCadastro: (req, res) => {
         return res.render('cadastro');
     },
     showAdm: async (req, res) => {
 
-        const usuario = await Usuarios.findOne({where: {id: '18'}})
+        const usuario = await Usuarios.findOne({ where: { id: '18' } })
 
-        return res.render('adm', {usuario})
+        return res.render('adm', { usuario })
     },
     showFinalizado: async (req, res) => {
         return res.render('finalizado')
     },
-    storeIndex: async (req, res)=>{
+    storeIndex: async (req, res) => {
 
-    await Usuarios.create({
-            telefone: req.body.telefone
+        let usuario;
+
+        try {
+            usuario = await Usuarios.create({
+                telefone: req.body.telefone
+            })
+
+        } catch (error) {
+            usuario = await Usuarios.findOne({
+                where: {telefone: req.body.telefone}
+            })
+        }
+
+        let compra = await Compras.create({
+            valor: req.body.valorCompra,
+            usuarios_id: usuario.id
         })
 
-    await Compras.create({
-            valor: req.body.valorCompra
+        Cashback.create({
+            
         })
 
-        res.redirect('/') 
+        res.redirect('/')
     },
-    storeForm: async (req, res) =>{
+    storeForm: async (req, res) => {
 
         let data = req.body.dataNascimento;
         let partesData = data.split('/');
@@ -43,7 +57,7 @@ const PagesController = {
         let cpf = req.body.cpf;
         let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
 
-        
+
         await Usuarios.create({
             nome: req.body.nome,
             data_nascimento: dataFormatada,
