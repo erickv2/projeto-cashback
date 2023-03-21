@@ -181,9 +181,9 @@ stars.forEach((star, index) => {
 
     // atualiza o valor da avaliação
     var rating = index + 1;
-    updaterating = document.getElementById('rating');
-    updaterating.value = rating;
-    console.log(updaterating.value)
+    updateRating = document.getElementById('rating');
+    updateRating.value = rating;
+    console.log(updateRating.value)
   });
 });
 

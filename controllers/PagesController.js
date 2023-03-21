@@ -43,13 +43,15 @@ const PagesController = {
         let cpf = req.body.cpf;
         let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
 
+        
         await Usuarios.create({
             nome: req.body.nome,
             data_nascimento: dataFormatada,
             telefone: telefoneFormatado,
             cpf: cpfFormatado,
             sexo: req.body.sexo,
-            email: req.body.email
+            email: req.body.email,
+            avaliacao_loja: req.body.rating
         })
 
 
