@@ -22,39 +22,39 @@
   <div class="container-fluid">
     <div class="row justify-content-center mt-5">
       <section class="col-12 colsm-6 col-md-4">
-        <form class="form-container" method="POST" action="/created">
+        <form class="form-container" method="POST" action="/createdForm">
           <h4 class="text-center mt-4 mb-5" id="bemvindo">BEM VINDO</h4>
           <div id="carouselExampleControls" class="carousel slide" data-bs-interval="false" data-bs-touch="false">
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="nome" class="form-label">Nome:</label>
-                  <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
+                  <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="telefone" class="form-label">Telefone:</label>
-                  <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone" pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})" required>
+                  <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Digite seu telefone" pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="cpf" class="form-label">CPF:</label>
-                  <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" onblur="validarCPF(this.value)" required>
+                  <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" onblur="validarCPF(this.value)" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="email" class="form-label">Email:</label>
-                  <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel" required>
                   <label for="sexo" class="form-label">Sexo:</label>
-                  <select class="form-control" id="sexo" required>
-                    <option selected value="">Selecione seu sexo</option>
+                  <select class="form-select" id="sexo" name="sexo">
+                    <option selected>Selecione seu sexo</option>
                     <option value="1">Masculino</option>
                     <option value="2">Feminino</option>
                     <option value="3">Outros</option>
@@ -64,7 +64,7 @@
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="data_nascimento" class="form-label">Data de nascimento:</label>
-                  <input type="text" class="form-control" id="data_nascimento" pattern="[0-9]{2}\/[0-9]{2}\/[0-9]{4}$" placeholder="00/00/0000" required>
+                  <input type="text" class="form-control" id="data_nascimento" name="dataNascimento" pattern="[0-9]{2}\/[0-9]{2}\/[0-9]{4}$" placeholder="00/00/0000" required>
                 </div>
               </div>
               <div class="carousel-item">

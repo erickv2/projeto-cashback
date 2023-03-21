@@ -16,6 +16,9 @@ const PagesController = {
 
         return res.render('adm', {usuario})
     },
+    showFinalizado: async (req, res) => {
+        return res.render('finalizado')
+    },
     storeIndex: async (req, res)=>{
 
     await Usuarios.create({
@@ -29,7 +32,28 @@ const PagesController = {
         res.redirect('/') 
     },
     storeForm: async (req, res) =>{
-        
+
+        let data = req.body.dataNascimento;
+        let partesData = data.split('/');
+        let dataFormatada = partesData[2] + '-' + partesData[1] + '-' + partesData[0];
+
+        let telefone = req.body.telefone;
+        let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
+
+        let cpf = req.body.cpf;
+        let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
+
+        await Usuarios.create({
+            nome: req.body.nome,
+            data_nascimento: dataFormatada,
+            telefone: telefoneFormatado,
+            cpf: cpfFormatado,
+            sexo: req.body.sexo,
+            email: req.body.email
+        })
+
+
+        res.redirect('finalizado')
     }
 }
 
