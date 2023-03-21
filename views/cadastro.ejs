@@ -30,49 +30,47 @@
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="nome" class="form-label">Nome:</label>
                   <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
-                  <input type="submit" id="validate"/>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="telefone" class="form-label">Telefone:</label>
-                  <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone">
+                  <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone" pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="cpf" class="form-label">CPF:</label>
-                  <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF">
+                  <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" onblur="validarCPF(this.value)" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="email" class="form-label">Email:</label>
-                  <input type="email" class="form-control" id="email" placeholder="Digite seu email">
+                  <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
                 </div>
               </div>
               <div class="carousel-item">
-                <div class="w-75 mb-5" id="formcarousel">
+                <div class="w-75 mb-5" id="formcarousel" required>
                   <label for="sexo" class="form-label">Sexo:</label>
-                  <select class="form-select" id="sexo">
-                    <option selected>Selecione seu sexo</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="feminino">Feminino</option>
-                    <option value="feminino">Outros</option>
+                  <select class="form-control" id="sexo" required>
+                    <option selected value="">Selecione seu sexo</option>
+                    <option value="1">Masculino</option>
+                    <option value="2">Feminino</option>
+                    <option value="3">Outros</option>
                   </select>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="data_nascimento" class="form-label">Data de nascimento:</label>
-                  <input type="text" class="form-control" id="data_nascimento" placeholder="00/00/0000">
+                  <input type="text" class="form-control" id="data_nascimento" pattern="[0-9]{2}\/[0-9]{2}\/[0-9]{4}$" placeholder="00/00/0000" required>
                 </div>
               </div>
               <div class="carousel-item">
                 <div class="w-75 mb-5" id="formcarousel">
                   <div class="form-group text-center mb-5">
-                    Seu cadastro está completo!
-                    Você já pode usar seu cashback.
+                    Faça uma avaliação de 0 a 5 estrelas.
                   </div>
                   <div class="d-flex align-items-center">
                     <div class="star"></div>
@@ -80,6 +78,7 @@
                     <div class="star"></div>
                     <div class="star"></div>
                     <div class="star"></div>
+                    <input type="hidden" class="form-control" id="rating" value = 0>
                   </div>
                 </div>
               </div>
@@ -128,9 +127,7 @@
       </section>
     </div>
   </div>
-
-  <script src="/js/jsFront.js"></script>
-
+  <script src="/js/jsCadastro.js"></script>
 </body>
 
 
