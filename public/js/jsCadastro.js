@@ -8,7 +8,7 @@ let maxCarouselItem = 7;
 //cria constantes para os botões
 const nextBtn = document.getElementById('proximo');
 const prevBtn = document.getElementById('prev');
-const sendBtn = document.getElementById('enviar')
+const sendBtn = document.getElementById('enviarHidden')
 const stars = document.querySelectorAll('.star');
 const rating = document.querySelector('#rating');
 nextBtn.disabled = true;

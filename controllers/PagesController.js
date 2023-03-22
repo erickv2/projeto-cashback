@@ -81,7 +81,7 @@ const PagesController = {
 
         await Usuarios.update({
             saldo_cashback: totalCashback,
-            total_gasto: totalGasto, // ver o que não está funcionando no total gasto
+            total_gasto: totalGasto, // ver o que não está funcionando no total
             numero_de_compras: numeroDeCompras,
             gasto_medio: mediaDeGasto
         }, {
