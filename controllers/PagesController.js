@@ -34,24 +34,29 @@ const PagesController = {
 
         let valorCompra = req.body.valorCompra
 
+        valorCompra = valorCompra.replace(',', '.');
+
         let valorCashback = valorCompra * porcentagem
 
         let usuario;
 
+        let telefone = req.body.telefone;
+        let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
+
         try {
             usuario = await Usuarios.create({
-                telefone: req.body.telefone
+                telefone: telefoneFormatado
             })
 
         } catch (error) { // ver sobre tipo de erro específico para usuário já cadastrado
             usuario = await Usuarios.findOne({
-                where: { telefone: req.body.telefone }
+                where: { telefone: telefoneFormatado }
             })
         }
 
 
         let compra = await Compras.create({
-            valor: req.body.valorCompra,
+            valor: valorCompra,
             cashback_compra: valorCashback,
             usuarios_id: usuario.id
         })
@@ -72,7 +77,7 @@ const PagesController = {
         let numeroDeCompras = await Compras.count('id', {
             where: {
                 usuarios_id: usuario.id
-            }
+            }   
         })
 
 
@@ -93,6 +98,10 @@ const PagesController = {
     },
     storeForm: async (req, res) => {
 
+        // let usuario = await Usuarios.findOne({
+        //     where: { telefone: req.body.telefone }
+        // })
+
         let data = req.body.dataNascimento;
         let partesData = data.split('/');
         let dataFormatada = partesData[2] + '-' + partesData[1] + '-' + partesData[0];
@@ -104,7 +113,7 @@ const PagesController = {
         let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
 
 
-        await Usuarios.create({
+        await Usuarios.update({
             nome: req.body.nome,
             data_nascimento: dataFormatada,
             telefone: telefoneFormatado,
@@ -112,6 +121,10 @@ const PagesController = {
             sexo: req.body.sexo,
             email: req.body.email,
             avaliacao_loja: req.body.rating
+        }, {
+            where: {
+                telefone: telefoneFormatado
+            }
         })
 
 
