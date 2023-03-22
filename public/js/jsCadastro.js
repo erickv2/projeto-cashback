@@ -183,7 +183,6 @@ stars.forEach((star, index) => {
     var rating = index + 1;
     updateRating = document.getElementById('rating');
     updateRating.value = rating;
-    console.log(updateRating.value)
   });
 });
 
