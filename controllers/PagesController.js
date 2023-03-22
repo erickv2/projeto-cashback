@@ -36,18 +36,6 @@ const PagesController = {
 
         let valorCashback = valorCompra * porcentagem
 
-        let totalCashback = await Cashback.sum('cashback_compra', {
-            where: {
-                usuario_id: usuario.id
-            }
-        })
-
-        await Cashback.create({
-            cashback_compra: valorCashback,
-            cashback_total: totalCashback
-            
-        })
-
         let usuario;
 
         try {
@@ -61,9 +49,44 @@ const PagesController = {
             })
         }
 
+
         let compra = await Compras.create({
             valor: req.body.valorCompra,
+            cashback_compra: valorCashback,
             usuarios_id: usuario.id
+        })
+        
+
+        let totalCashback = await Compras.sum('cashback_compra', {
+            where: {
+                usuarios_id: usuario.id
+            }
+        })
+
+        let totalGasto = await Compras.sum('valor', {
+            where: {
+                usuarios_id: usuario.id
+            }
+        })
+
+        let numeroDeCompras = await Compras.count('id', {
+            where: {
+                usuarios_id: usuario.id
+            }
+        })
+
+
+        let mediaDeGasto = totalGasto / numeroDeCompras
+
+        await Usuarios.update({
+            saldo_cashback: totalCashback,
+            total_gasto: totalGasto, // ver o que não está funcionando no total
+            numero_de_compras: numeroDeCompras,
+            gasto_medio: mediaDeGasto
+        }, {
+            where: {
+                id: usuario.id
+            }
         })
 
         res.redirect('/')
