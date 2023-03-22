@@ -2,7 +2,6 @@ const path = require('path');
 const idu = 2;
 const { Usuarios } = require('../database/models')
 const { Compras } = require('../database/models')
-const { Cashback } = require('../database/models')
 
 const PagesController = {
     showIndex: async (req, res) => {
