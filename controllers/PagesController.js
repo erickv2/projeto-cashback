@@ -28,46 +28,46 @@ const PagesController = {
     showConsultar: async (req, res) => {
         return res.render('consultar');
     },
-    storeAcumular: async (req, res) => {
+    // storeAcumular: async (req, res) => {
 
-        let porcentagem = 5 / 100
+    //     let porcentagem = 5 / 100
 
-        let valorCompra = req.body.valorCompra
+    //     let valorCompra = req.body.valorCompra
 
-        let valorCashback = valorCompra * porcentagem
+    //     let valorCashback = valorCompra * porcentagem
 
-        let totalCashback = await Cashback.sum('cashback_compra', {
-            where: {
-                usuario_id: usuario.id
-            }
-        })
+    //     let totalCashback = await Cashback.sum('cashback_compra', {
+    //         where: {
+    //             usuario_id: usuario.id
+    //         }
+    //     })
 
-        await Cashback.create({
-            cashback_compra: valorCashback,
-            cashback_total: totalCashback,
+    //     await Cashback.create({
+    //         cashback_compra: valorCashback,
+    //         cashback_total: totalCashback
             
-        })
+    //     })
 
-        let usuario;
+    //     let usuario;
 
-        try {
-            usuario = await Usuarios.create({
-                telefone: req.body.telefone
-            })
+    //     try {
+    //         usuario = await Usuarios.create({
+    //             telefone: req.body.telefone
+    //         })
 
-        } catch (error) { // ver sobre tipo de erro específico para usuário já cadastrado
-            usuario = await Usuarios.findOne({
-                where: { telefone: req.body.telefone }
-            })
-        }
+    //     } catch (error) { // ver sobre tipo de erro específico para usuário já cadastrado
+    //         usuario = await Usuarios.findOne({
+    //             where: { telefone: req.body.telefone }
+    //         })
+    //     }
 
-        let compra = await Compras.create({
-            valor: req.body.valorCompra,
-            usuarios_id: usuario.id
-        })
+    //     let compra = await Compras.create({
+    //         valor: req.body.valorCompra,
+    //         usuarios_id: usuario.id
+    //     })
 
-        res.redirect('/')
-    },
+    //     res.redirect('/')
+    // },
     storeForm: async (req, res) => {
 
         let data = req.body.dataNascimento;

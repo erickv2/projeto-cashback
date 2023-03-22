@@ -22,10 +22,17 @@ form {
 }
 
 #enviar {
+	font-weight: bold;
 	margin-bottom: 15px;
 	padding-left: 20px;
 	padding-right: 20px;
 	background-color: #00a898;
+}
+
+#enviarHidden {
+	background-color: #ffc00e;
+	font-weight: bold;
+	visibility: collapse;
 }
 
 #resgatar {
