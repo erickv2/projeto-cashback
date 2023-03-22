@@ -20,7 +20,7 @@ router.get('/consultar', PagesController.showConsultar)
 
 // -----------------------------------------------------------
 
-router.post('/created', PagesController.storeIndex)
+router.post('/store-acumular', PagesController.storeAcumular)
 
 router.post('/createdForm', PagesController.storeForm)
 
