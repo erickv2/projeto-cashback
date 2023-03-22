@@ -11,6 +11,15 @@ router.get('/adm', PagesController.showAdm)
 
 router.get('/finalizado', PagesController.showFinalizado)
 
+router.get('/acumular', PagesController.showAcumular)
+
+router.get('/resgatar', PagesController.ShowResgatar)
+
+router.get('/consultar', PagesController.showConsultar)
+
+
+// -----------------------------------------------------------
+
 router.post('/created', PagesController.storeIndex)
 
 router.post('/createdForm', PagesController.storeForm)

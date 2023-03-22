@@ -11,25 +11,14 @@
 <div class="container-fluid">
 	<div class="row justify-content-center mt-5">
 		<section class="col-12 colsm-6 col-md-4">
-			<form class="form-container" method="POST" action="/created">
-				<h4 class="text-center mt-4 mb-5" id="bemvindo">ACUMULAR</h4>
-				<div class="form-group">
-                    Telefone
-					<input type="text" class="form-control mt-2" name="telefone" placeholder="(XX) XXXXX-XXXX">
-				</div>
-				
-				<div class="form-group">
-                    Valor da compra
-					<input type="text" class="form-control mt-2" name="valorCompra" placeholder="R$ XX,XX">
-				</div>
-
+			<form class="form-container">
+				<h4 class="text-center mt-4 mb-5" id="bemvindo">BEM-VINDO</h4>
 				<div class="d-flex align-items-center flex-column">
-					<button class="btn btn-primary btn-block w-75 mb-4 mt-3" id="enviar" type="submit">Enviar!</button>
-					<button class="btn btn-primary btn-block w-50 mb-2" id="resgatar">Resgatar</button>
-					<button class="btn btn-primary btn-block w-50 mb-2" id="consultar">Consultar</button>
+				<a href="/acumular" button class="btn btn-primary btn-block w-50 mb-2" id="enviar">Acumular</button></a>
+				<a href="/resgatar" button class="btn btn-primary btn-block w-50 mb-2" id="resgatar">Resgatar</button></a>
+				<a href="/consultar" button class="btn btn-primary btn-block w-50 mb-2" id="consultar">Consultar</button></a>	
 				</div>
 			</form>
-			
 		</section>
 	</div>
 </div>

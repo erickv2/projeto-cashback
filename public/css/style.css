@@ -16,28 +16,28 @@ form {
 	width: 60px;
 	height: 60px;
 	position: absolute;
-	top:-35px;
+	top: -35px;
 	left: 40%;
 	border-radius: 50%;
 }
 
 #enviar {
-  /* margin-bottom: 50px; */
-  background-color: #ffc00e;
-  font-weight: bold;
-  visibility: collapse;
+	margin-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #00a898;
 }
 
 #resgatar {
-  margin-bottom: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #00a898;
+	margin-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #00a898;
 }
 
 #consultar {
-  margin-bottom: 20px;
-  background-color: #00a898;
+	margin-bottom: 20px;
+	background-color: #00a898;
 }
 
 #proximo {
@@ -81,7 +81,7 @@ form {
 
 #formcarousel {
 	width: 500px;
-	margin-right: auto; 
+	margin-right: auto;
 	margin-left: auto;
 }
 

@@ -1,7 +1,8 @@
-module.exports = (sequelize, DataType) => {
+module.exports = (sequelize, DataTypes) => {
     const Cashback = sequelize.define('Cashback', {
-        valor_cashback: DataType.DECIMAL(5,2),
-        resgatado: DataType.TINYINT
+        cashback_compra: DataTypes.DECIMAL(5,2),
+        cashback_total: DataTypes.DECIMAL(5,2),
+        compras_id: DataTypes.INTEGER
     })
 
     Cashback.associate = models => {

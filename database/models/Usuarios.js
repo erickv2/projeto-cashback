@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         cpf: DataTypes.INTEGER,
         sexo: DataTypes.INTEGER,
         email: DataTypes.STRING(45),
-        avaliacao_loja: DataTypes.INTEGER
+        avaliacao_loja: DataTypes.INTEGER,
+        saldo_cashback: DataTypes.DECIMAL(5,2),
+        numero_de_compras: DataTypes.INTEGER,
+        gasto_medio: DataTypes.DECIMAL(5,20)
     }, {
         tableName: 'usuarios'
     })

@@ -19,7 +19,34 @@ const PagesController = {
     showFinalizado: async (req, res) => {
         return res.render('finalizado')
     },
-    storeIndex: async (req, res) => {
+    showAcumular: async (req, res) => {
+        return res.render('acumular');
+    },
+    ShowResgatar: async (req, res) => {
+        return res.render('resgatar');
+    },
+    showConsultar: async (req, res) => {
+        return res.render('consultar');
+    },
+    storeAcumular: async (req, res) => {
+
+        let porcentagem = 5 / 100
+
+        let valorCompra = req.body.valorCompra
+
+        let valorCashback = valorCompra * porcentagem
+
+        let totalCashback = await Cashback.sum('cashback_compra', {
+            where: {
+                usuario_id: usuario.id
+            }
+        })
+
+        await Cashback.create({
+            cashback_compra: valorCashback,
+            cashback_total: totalCashback,
+            
+        })
 
         let usuario;
 
@@ -28,19 +55,15 @@ const PagesController = {
                 telefone: req.body.telefone
             })
 
-        } catch (error) {
+        } catch (error) { // ver sobre tipo de erro específico para usuário já cadastrado
             usuario = await Usuarios.findOne({
-                where: {telefone: req.body.telefone}
+                where: { telefone: req.body.telefone }
             })
         }
 
         let compra = await Compras.create({
             valor: req.body.valorCompra,
             usuarios_id: usuario.id
-        })
-
-        Cashback.create({
-            
         })
 
         res.redirect('/')
