@@ -68,25 +68,39 @@ const PagesController = {
             }
         })
 
-        let totalGasto = await Compras.sum('valor', {
+        // let totalGasto = await Compras.sum('valor', { where: { usuarios_id: usuario.id} });
+
+
+       let incrementarTotalDeCompras = await Usuarios.increment('numero_de_compras', {where: {id: usuario.id}, returning: true});
+
+       let numeroDeCompras = await Usuarios.findOne({
+        where: {
+          id: usuario.id
+        },
+        attributes: ['numero_de_compras'],
+        raw: true
+      });
+
+        let { numero_de_compras } = numeroDeCompras
+
+        let incrementarTotalGasto = await Usuarios.increment('total_gasto', {by: valorCompra, where: {id: usuario.id}, returning: true});
+        
+        let totalGasto = await Usuarios.findOne({
             where: {
-                usuarios_id: usuario.id
-            }
-        })
+              id: usuario.id
+            },
+            attributes: ['total_gasto'],
+            raw: true
+          });
 
-        let numeroDeCompras = await Compras.count('id', {
-            where: {
-                usuarios_id: usuario.id
-            }   
-        })
-
-
-        let mediaDeGasto = totalGasto / numeroDeCompras
+          let { total_gasto } = totalGasto
+          
+        let mediaDeGasto = total_gasto / numero_de_compras
 
         await Usuarios.update({
             saldo_cashback: totalCashback,
-            total_gasto: totalGasto, // ver o que não está funcionando no total
-            numero_de_compras: numeroDeCompras,
+            total_gasto: total_gasto, // ver o que não está funcionando no total
+            numero_de_compras: numero_de_compras,
             gasto_medio: mediaDeGasto
         }, {
             where: {
