@@ -20,6 +20,8 @@ router.get('/consultar', PagesController.showConsultar)
 
 // -----------------------------------------------------------
 
+router.post('/store-resgatar', PagesController.storeResgatar)
+
 router.post('/store-acumular', PagesController.storeAcumular)
 
 router.post('/createdForm', PagesController.storeForm)

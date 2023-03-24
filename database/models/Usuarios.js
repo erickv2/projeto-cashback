@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         email: DataTypes.STRING(45),
         avaliacao_loja: DataTypes.INTEGER,
         saldo_cashback: DataTypes.DECIMAL(5,2),
+        total_cashback: DataTypes.DECIMAL(5,2),
         numero_de_compras: DataTypes.INTEGER,
         gasto_medio: DataTypes.DECIMAL(5,20)
     }, {

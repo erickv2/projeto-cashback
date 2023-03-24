@@ -99,6 +99,7 @@ const PagesController = {
 
         await Usuarios.update({
             saldo_cashback: totalCashback,
+            total_cashback: totalCashback,
             total_gasto: total_gasto, // ver o que não está funcionando no total
             numero_de_compras: numero_de_compras,
             gasto_medio: mediaDeGasto
@@ -110,11 +111,57 @@ const PagesController = {
 
         res.redirect('/')
     },
-    storeForm: async (req, res) => {
+    storeResgatar: async (req, res) => {
+        let valorCompra = req.body.valorCompra;
+        valorCompra = valorCompra.replace(',', '.');
 
-        // let usuario = await Usuarios.findOne({
-        //     where: { telefone: req.body.telefone }
-        // })
+        let telefone = req.body.telefone;
+        let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
+
+        let usuario = await Usuarios.findOne({
+            where: { telefone: telefoneFormatado }
+        })
+        
+        let totalCashback = await Compras.sum('cashback_compra', {
+            where: {
+                usuarios_id: usuario.id
+            }
+        })
+
+        if(totalCashback >= valorCompra){
+         let novoValorCashback = totalCashback - valorCompra
+
+         await Usuarios.update({
+            saldo_cashback: novoValorCashback,
+            total_cashback: totalCashback
+        }, {
+            where: {
+                id: usuario.id
+            }
+        })
+
+         console.log(novoValorCashback)    
+
+        }else{
+         let novoValorCompra = valorCompra - totalCashback
+         CashbackZerado = 0
+
+         await Usuarios.update({
+            saldo_cashback: CashbackZerado,
+            total_cashback: totalCashback
+        }, {
+            where: {
+                id: usuario.id
+            }
+        })
+
+         console.log(novoValorCompra)
+         console.log(totalCashback)
+        }
+
+        res.redirect('/')
+    },
+    storeForm: async (req, res) => {
 
         let data = req.body.dataNascimento;
         let partesData = data.split('/');
@@ -126,6 +173,9 @@ const PagesController = {
         let cpf = req.body.cpf;
         let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
 
+        let usuario = await Usuarios.findOne({
+            where: { telefone: telefoneFormatado }
+        })
 
         await Usuarios.update({
             nome: req.body.nome,
@@ -137,7 +187,7 @@ const PagesController = {
             avaliacao_loja: req.body.rating
         }, {
             where: {
-                telefone: telefoneFormatado
+                id: usuario.id
             }
         })
 
