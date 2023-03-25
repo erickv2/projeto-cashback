@@ -3,6 +3,8 @@ const idu = 2;
 const { Usuarios } = require('../database/models')
 const { Compras } = require('../database/models')
 
+let porcentagem = 5 / 100
+
 const PagesController = {
     showIndex: async (req, res) => {
         return res.render('index');
@@ -30,7 +32,7 @@ const PagesController = {
     },
     storeAcumular: async (req, res) => {
 
-        let porcentagem = 5 / 100
+        // let porcentagem = 5 / 100
 
         let valorCompra = req.body.valorCompra
 
@@ -40,7 +42,7 @@ const PagesController = {
 
         let usuario;
 
-        let telefone = req.body.telefone;
+        let telefone = req.body.telefone;   
         let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
 
         try {
@@ -60,11 +62,17 @@ const PagesController = {
             cashback_compra: valorCashback,
             usuarios_id: usuario.id
         })
+
+        let CashbackAtual = await Usuarios.sum('saldo_cashback', {
+            where: {
+                id: usuario.id
+            }
+        })
         
 
-        let totalCashback = await Compras.sum('cashback_compra', {
+        let totalCashback = await Usuarios.sum('total_cashback', {
             where: {
-                usuarios_id: usuario.id
+                id: usuario.id
             }
         })
 
@@ -97,17 +105,34 @@ const PagesController = {
           
         let mediaDeGasto = total_gasto / numero_de_compras
 
-        await Usuarios.update({
-            saldo_cashback: totalCashback,
-            total_cashback: totalCashback,
-            total_gasto: total_gasto, // ver o que não está funcionando no total
-            numero_de_compras: numero_de_compras,
-            gasto_medio: mediaDeGasto
-        }, {
-            where: {
-                id: usuario.id
-            }
-        })
+        if(CashbackAtual == 0){
+            await Usuarios.update({
+                saldo_cashback: valorCashback,
+                total_cashback: usuario.total_cashback + valorCashback,
+                total_gasto: total_gasto,
+                numero_de_compras: numero_de_compras,
+                gasto_medio: mediaDeGasto
+            }, {
+                where: {
+                    id: usuario.id
+                }
+            })
+        }else{
+            await Usuarios.update({
+                saldo_cashback: CashbackAtual + valorCashback,
+                total_cashback: usuario.total_cashback + valorCashback,
+                total_gasto: total_gasto,
+                numero_de_compras: numero_de_compras,
+                gasto_medio: mediaDeGasto
+            }, {
+                where: {
+                    id: usuario.id
+                }
+            })
+        }
+
+        console.log(usuario.total_cashback)
+        console.log(valorCashback)
 
         res.redirect('/')
     },
@@ -121,26 +146,33 @@ const PagesController = {
         let usuario = await Usuarios.findOne({
             where: { telefone: telefoneFormatado }
         })
-        
+
         let totalCashback = await Compras.sum('cashback_compra', {
             where: {
                 usuarios_id: usuario.id
             }
         })
 
+        let totalCashbackGeral = await Usuarios.sum('total_cashback', {
+            where: {
+                id: usuario.id
+            }
+        })
+
+        // let incrementarTotalGasto = await Usuarios.increment('total_cashback', {by: valorCashback, where: {id: usuario.id}, returning: true});
+
         if(totalCashback >= valorCompra){
          let novoValorCashback = totalCashback - valorCompra
 
          await Usuarios.update({
-            saldo_cashback: novoValorCashback,
-            total_cashback: totalCashback
+            saldo_cashback: novoValorCashback
         }, {
             where: {
                 id: usuario.id
             }
         })
 
-         console.log(novoValorCashback)    
+         console.log(novoValorCashback)
 
         }else{
          let novoValorCompra = valorCompra - totalCashback
@@ -148,7 +180,7 @@ const PagesController = {
 
          await Usuarios.update({
             saldo_cashback: CashbackZerado,
-            total_cashback: totalCashback
+            total_cashback: totalCashbackGeral
         }, {
             where: {
                 id: usuario.id
