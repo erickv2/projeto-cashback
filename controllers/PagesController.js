@@ -32,7 +32,6 @@ const PagesController = {
     },
     storeAcumular: async (req, res) => {
 
-        // let porcentagem = 5 / 100
 
         let valorCompra = req.body.valorCompra
 
@@ -42,17 +41,18 @@ const PagesController = {
 
         let usuario;
 
-        let telefone = req.body.telefone;   
-        let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
+        let telefone = req.body.telefone;
+        telefone = telefone.replace(new RegExp('[^0-9]', 'g'), '');
 
+        //TODO: IMPLEMENTAR NA FUNÇÃO DE RESGATE E DE CONSULTA
         try {
             usuario = await Usuarios.create({
-                telefone: telefoneFormatado
+                telefone: telefone
             })
 
-        } catch (error) { // ver sobre tipo de erro específico para usuário já cadastrado
+        } catch (error) { //TODO: ver sobre tipo de erro específico para usuário já cadastrado
             usuario = await Usuarios.findOne({
-                where: { telefone: telefoneFormatado }
+                where: { telefone: telefone }
             })
         }
 
@@ -63,66 +63,77 @@ const PagesController = {
             usuarios_id: usuario.id
         })
 
-        let CashbackAtual = await Usuarios.sum('saldo_cashback', {
+
+
+        let incrementarTotalDeCompras = await Usuarios.increment('numero_de_compras', { where: { id: usuario.id }, returning: true });
+
+        let numeroDeCompras = await Usuarios.findOne({
             where: {
                 id: usuario.id
-            }
-        })
-        
+            },
+            attributes: ['numero_de_compras'],
+            raw: true
+        });
 
-        let totalCashback = await Usuarios.sum('total_cashback', {
-            where: {
-                id: usuario.id
-            }
-        })
+        numeroDeCompras = numeroDeCompras.numero_de_compras;
 
-        // let totalGasto = await Compras.sum('valor', { where: { usuarios_id: usuario.id} });
+        let incrementarTotalGasto = await Usuarios.increment('total_gasto', { by: valorCompra, where: { id: usuario.id }, returning: true });
 
-
-       let incrementarTotalDeCompras = await Usuarios.increment('numero_de_compras', {where: {id: usuario.id}, returning: true});
-
-       let numeroDeCompras = await Usuarios.findOne({
-        where: {
-          id: usuario.id
-        },
-        attributes: ['numero_de_compras'],
-        raw: true
-      });
-
-        let { numero_de_compras } = numeroDeCompras
-
-        let incrementarTotalGasto = await Usuarios.increment('total_gasto', {by: valorCompra, where: {id: usuario.id}, returning: true});
-        
         let totalGasto = await Usuarios.findOne({
             where: {
-              id: usuario.id
+                id: usuario.id
             },
             attributes: ['total_gasto'],
             raw: true
-          });
+        });
 
-          let { total_gasto } = totalGasto
-          
-        let mediaDeGasto = total_gasto / numero_de_compras
+        totalGasto = totalGasto.total_gasto;
 
-        if(CashbackAtual == 0){
+
+        let mediaDeGasto = totalGasto / numeroDeCompras
+
+        let incrementarTotalCashback = await Usuarios.increment('total_cashback', { by: valorCashback, where: { id: usuario.id }, returning: true });
+
+        let totalCashback = await Usuarios.findOne({
+            where: {
+                id: usuario.id
+            },
+            attributes: ['total_cashback'],
+            raw: true
+        });
+
+
+        totalCashback = totalCashback.total_cashback;
+        let cashbackAtual = await Usuarios.findOne({
+            where: {
+                id: usuario.id
+            },
+            attributes: ['saldo_cashback'],
+            raw: true
+        });
+
+        cashbackAtual = cashbackAtual.saldo_cashback;
+
+        //testa se o cashback atual é zero
+        if (cashbackAtual == 0) {
             await Usuarios.update({
+                total_cashback: totalCashback,
                 saldo_cashback: valorCashback,
-                total_cashback: usuario.total_cashback + valorCashback,
-                total_gasto: total_gasto,
-                numero_de_compras: numero_de_compras,
+                numero_de_compras: numeroDeCompras,
                 gasto_medio: mediaDeGasto
             }, {
                 where: {
                     id: usuario.id
                 }
             })
-        }else{
+
+        } else {
+            //incrementa o saldo de cashback
+            await Usuarios.increment('saldo_cashback', { by: valorCashback, where: { id: usuario.id }, returning: true });
+
             await Usuarios.update({
-                saldo_cashback: CashbackAtual + valorCashback,
-                total_cashback: usuario.total_cashback + valorCashback,
-                total_gasto: total_gasto,
-                numero_de_compras: numero_de_compras,
+                total_gasto: totalGasto,
+                numero_de_compras: numeroDeCompras,
                 gasto_medio: mediaDeGasto
             }, {
                 where: {
@@ -130,66 +141,87 @@ const PagesController = {
                 }
             })
         }
-
+        console.log(totalCashback)
         console.log(usuario.total_cashback)
         console.log(valorCashback)
 
         res.redirect('/')
     },
     storeResgatar: async (req, res) => {
+        //copiar para storeAcumular
+        // tratando os dados inseridos
         let valorCompra = req.body.valorCompra;
         valorCompra = valorCompra.replace(',', '.');
 
+
         let telefone = req.body.telefone;
-        let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
+        telefone = telefone.replace(new RegExp('[^0-9]', 'g'), '');
 
         let usuario = await Usuarios.findOne({
-            where: { telefone: telefoneFormatado }
+            where: { telefone: telefone }
         })
 
-        let totalCashback = await Compras.sum('cashback_compra', {
-            where: {
-                usuarios_id: usuario.id
-            }
-        })
-
-        let totalCashbackGeral = await Usuarios.sum('total_cashback', {
+        let cashbackAtual = await Usuarios.findOne({
             where: {
                 id: usuario.id
-            }
-        })
+            },
+            attributes: ['saldo_cashback'],
+            raw: true
+        });
 
-        // let incrementarTotalGasto = await Usuarios.increment('total_cashback', {by: valorCashback, where: {id: usuario.id}, returning: true});
+        cashbackAtual = cashbackAtual.saldo_cashback;
 
-        if(totalCashback >= valorCompra){
-         let novoValorCashback = totalCashback - valorCompra
+        //calcula a diferença entre o valor da compra e o saldo de cashback
+        let valorCompraResgatada = valorCompra - cashbackAtual;
 
-         await Usuarios.update({
-            saldo_cashback: novoValorCashback
-        }, {
-            where: {
-                id: usuario.id
-            }
-        })
+        console.log(cashbackAtual)
+        console.log(valorCompraResgatada)
 
-         console.log(novoValorCashback)
-
-        }else{
-         let novoValorCompra = valorCompra - totalCashback
-         CashbackZerado = 0
-
-         await Usuarios.update({
-            saldo_cashback: CashbackZerado,
-            total_cashback: totalCashbackGeral
-        }, {
-            where: {
-                id: usuario.id
-            }
-        })
-
-         console.log(novoValorCompra)
-         console.log(totalCashback)
+        // checa se o valor da compra resgatada é negativo
+        if (valorCompraResgatada < 0) {
+            cashbackAtual = valorCompraResgatada * -1
         }
+        else {
+            cashbackAtual = 0
+        }
+
+        let incrementarTotalDeCompras = await Usuarios.increment('numero_de_compras', { where: { id: usuario.id }, returning: true });
+
+        //incrementa média de gasto
+        let numeroDeCompras = await Usuarios.findOne({
+            where: {
+                id: usuario.id
+            },
+            attributes: ['numero_de_compras'],
+            raw: true
+        });
+
+        numeroDeCompras = numeroDeCompras.numero_de_compras
+
+        let totalGasto = await Usuarios.findOne({
+            where: {
+                id: usuario.id
+            },
+            attributes: ['total_gasto'],
+            raw: true
+        });
+
+        totalGasto = totalGasto.total_gasto
+
+        let mediaDeGasto = totalGasto / numeroDeCompras
+
+        //incrementa total gasto
+        await Usuarios.increment('total_gasto', { by: valorCompra, where: { id: usuario.id }, returning: true });
+
+        await Usuarios.update({
+            saldo_cashback: cashbackAtual,
+            gasto_medio: mediaDeGasto 
+        }, {
+            where: {
+                id: usuario.id
+            }
+        })
+
 
         res.redirect('/')
     },
