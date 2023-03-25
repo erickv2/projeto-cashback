@@ -14,7 +14,7 @@ const PagesController = {
     },
     showAdm: async (req, res) => {
 
-        const usuario = await Usuarios.findOne({ where: { id: '18' } })
+        const usuario = await Usuarios.findOne({ where: { id: '1' } })
 
         return res.render('adm', { usuario })
     },
