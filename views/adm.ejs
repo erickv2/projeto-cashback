@@ -28,66 +28,25 @@
             <th>Créditos conquistados</th>
             <th>Créditos resgatados</th>
             </thead>
-            <tbody class="table-group-divider rounded"><tr>
-                <td><%= usuario.nome %></td>
-                <td><%= usuario.telefone %></td>
-                <td>Coluna 3</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-            </tr>
+
+        <tbody class="table-group-divider rounded">
+
+            <% users.forEach(user => { %>
+
             <tr>
-                <td>Coluna 1</td>
-                <td>Coluna 2</td>
-                <td>Coluna 3</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
+                <td><%= user.nome %></td>
+                <td><%= user.telefone %></td>
+                <td><%= user.total_gasto %></td>
+                <td><%= user.avaliacao_loja %></td>
+                <td><%= user.gasto_medio %></td>
+                <td>Cliente há</td>
+                <td><%= user.saldo_cashback %></td>
+                <td><%= user.total_cashback %></td>
+                <td>Créditos resgatados</td>
             </tr>
-            <tr>
-                <td>Coluna 1</td>
-                <td>Coluna 2</td>
-                <td>Coluna 3</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-            </tr>
-            <tr>
-                <td>Coluna 1</td>
-                <td>Coluna 2</td>
-                <td>Coluna 3</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-            </tr>
-            <tr>
-                <td>Coluna 1</td>
-                <td>Coluna 2</td>
-                <td>Coluna 3</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-                <td>Coluna 4</td>
-            </tr></tbody>
+
+            <% }) %>
+        </tbody>
         </table>
     </div>
 
