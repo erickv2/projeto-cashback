@@ -30,11 +30,12 @@ async function atualizarCompras(usuario, valorCompra) {
     let numeroDeCompras = usuario.numero_de_compras + 1
 
     let totalGasto = usuario.total_gasto
+    let valorCashback
     // debug
     console.log('valor compra:', valorCompra)
     //testa se o valor de compra é negativo e define o cashback e o valor da compra pra 0
     if (valorCompra < 0) {
-        var valorCashback = valorCompra
+        valorCashback = valorCompra
         valorCompra = 0
     }
 
@@ -44,7 +45,7 @@ async function atualizarCompras(usuario, valorCompra) {
         totalGasto = totalGasto + valorCompra
         console.log('total gasto atual: ', totalGasto)
         //Calcula o cashback
-        var valorCashback = valorCompra * porcentagem
+        valorCashback = valorCompra * porcentagem
     }
 
     //Cacula a média de gasto
