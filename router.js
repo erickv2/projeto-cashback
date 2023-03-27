@@ -24,6 +24,8 @@ router.post('/store-resgatar', PagesController.storeResgatar)
 
 router.post('/store-acumular', PagesController.storeAcumular)
 
+router.post('/store-consultar', PagesController.storeConsultar)
+
 router.post('/createdForm', PagesController.storeForm)
 
 module.exports = router
