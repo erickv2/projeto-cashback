@@ -18,7 +18,10 @@ async function buscarUsuario(telefone, criar) {
     else {
 
         const usuario = await Usuarios.findAll({ where: { telefone: telefone }, raw: true }).then(result => result[0])
-        return usuario
+        console.log(usuario)
+        if (usuario !== undefined){return usuario}
+        else{console.log('usuário não encontrado')}
+
     }
 
 }
@@ -31,7 +34,7 @@ async function atualizarCompras(usuario, valorCompra) {
     console.log('valor compra:', valorCompra)
     //testa se o valor de compra é negativo e define o cashback e o valor da compra pra 0
     if (valorCompra < 0) {
-        const valorCashback = valorCompra
+        var valorCashback = valorCompra
         valorCompra = 0
     }
 
@@ -41,7 +44,7 @@ async function atualizarCompras(usuario, valorCompra) {
         totalGasto = totalGasto + valorCompra
         console.log('total gasto atual: ', totalGasto)
         //Calcula o cashback
-        const valorCashback = valorCompra * porcentagem
+        var valorCashback = valorCompra * porcentagem
     }
 
     //Cacula a média de gasto
@@ -63,7 +66,6 @@ async function atualizarCompras(usuario, valorCompra) {
             numero_de_compras: numeroDeCompras
         },
             { where: { id: id } });
-            
         //atualiza a tabela compras
         await Compras.create({
             valor: valorCompra,
@@ -313,7 +315,7 @@ const PagesController = {
             if (usuario !== undefined) {
                 await atualizarCompras(await usuario, valorCompraResgatada);
                 //atualiza o saldo de cashback para a sobra
-                await Usuarios.update({ saldo_cashback: cashbackAtual, where: { id: usuario.id } });
+                await Usuarios.update({ saldo_cashback: cashbackAtual},{ where: { id: usuario.id } });
             } else {
                 console.log('Usuário não encontrado');
             }
@@ -323,7 +325,7 @@ const PagesController = {
             if (usuario !== undefined) {
                 await atualizarCompras(await usuario, valorCompraResgatada);
                 //zera o saldo de cashback
-                await Usuarios.update({ saldo_cashback: cashbackAtual, where: { id: usuario.id } });
+                await Usuarios.update({ saldo_cashback: cashbackAtual},{ where: { id: usuario.id } });
             } else {
                 console.log('Usuário não encontrado');
             }
