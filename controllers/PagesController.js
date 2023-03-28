@@ -164,7 +164,8 @@ const PagesController = {
         return res.render('resgatar');
     },
     showConsultar: async (req, res) => {
-        return res.render('consultar');
+        let usuario = "";
+        return res.render('consultar', {usuario: usuario});
     },
     storeAcumular: async (req, res) => {
         //pega os valores e trata
@@ -380,8 +381,8 @@ const PagesController = {
         console.log(usuario)
         id = usuario.id
         console.log(id)
-        console.log('teste')
-        res.redirect('/')
+        res.render('consultar', {usuario: usuario});
+        // res.redirect('/')
     },
     storeForm: async (req, res) => {
 
