@@ -126,3 +126,8 @@ form {
 #validate {
 	display: none;
 }
+
+#erro{
+	font-weight: bold;
+	color: red;
+}

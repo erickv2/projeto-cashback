@@ -145,8 +145,9 @@ const PagesController = {
     showIndex: async (req, res) => {
         return res.render('index');
     },
-    showCadastro: (req, res) => {
-        return res.render('cadastro');
+    showCadastro: async (req, res) => {
+        let erro;
+        return res.render('cadastro', {erro});
     },
     showAdm: async (req, res) => {
 
@@ -164,7 +165,7 @@ const PagesController = {
         return res.render('resgatar');
     },
     showConsultar: async (req, res) => {
-        let usuario = "";
+        let usuario;
         return res.render('consultar', {usuario: usuario});
     },
     storeAcumular: async (req, res) => {
@@ -396,10 +397,15 @@ const PagesController = {
         let cpf = req.body.cpf;
         let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
 
-        let usuario = await Usuarios.findOne({
+        let usuario = await Usuarios.findAll({
             where: { telefone: telefoneFormatado }
         })
+        //se o usuario ainda não cadastrou o cpf
+        if (usuario.cpf !== null){
+        erro = ("Já existe um usuário cadastrado com este CPF.")
+        res.render('cadastro',{erro})}
 
+        else{
         await Usuarios.update({
             nome: req.body.nome,
             data_nascimento: dataFormatada,
@@ -416,6 +422,7 @@ const PagesController = {
 
 
         res.redirect('finalizado')
+        }
     }
 }
 
