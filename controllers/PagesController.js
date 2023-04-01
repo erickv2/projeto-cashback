@@ -114,11 +114,21 @@ async function atualizarCompras(usuario, valorCompra) {
 const PagesController = {
     showIndex: async (req, res) => {
 
-        porcentagem = await buscaPorcento()
+        //checa conexão com banco de dados
+        try {
+            porcentagem = await buscaPorcento()
+            console.log(porcentagem)
+            return res.render('index');
 
-        console.log(porcentagem)
+        } catch(error) {
+            return res.redirect('erro')
+        }
+        
+    },
+    showErro: async (req, res) => {
 
-        return res.render('index');
+        return res.render('erro')
+
     },
     showCadastro: async (req, res) => {
         let erro;
@@ -244,20 +254,25 @@ const PagesController = {
         let partesData = data.split('/');
         let dataFormatada = partesData[2] + '-' + partesData[1] + '-' + partesData[0];
 
-        let telefone = req.body.telefone;
-        let telefoneFormatado = telefone.replace(new RegExp('[^0-9]', 'g'), '');
+        const telefone = req.body.telefone.replace(new RegExp('[^0-9]', 'g'), '');
 
-        let cpf = req.body.cpf;
-        let cpfFormatado = cpf.replace(new RegExp('[^0-9]', 'g'), '');
+        let cpf = req.body.cpf.replace(new RegExp('[^0-9]', 'g'), '');
 
         //encontra usuário
-        let usuario = await Usuarios.findAll({
-            where: { telefone: telefoneFormatado }
-        })
+        const usuario = await buscarUsuario(telefone)
+
+        console.log(cpf)
+        console.log(usuario.telefone)
+        console.log(usuario)
 
         //se já cadastrou
         if (usuario.cpf !== null) {
             erro = ("Já existe um usuário cadastrado com este CPF.")
+            res.render('cadastro', { erro })
+        }
+
+        else if (usuario.telefone == null) {
+            erro = ("Esse telefone não foi cadastrado")
             res.render('cadastro', { erro })
         }
 
@@ -266,8 +281,8 @@ const PagesController = {
             await Usuarios.update({
                 nome: req.body.nome,
                 data_nascimento: dataFormatada,
-                telefone: telefoneFormatado,
-                cpf: cpfFormatado,
+                telefone: telefone,
+                cpf: cpf,
                 sexo: req.body.sexo,
                 email: req.body.email,
                 avaliacao_loja: req.body.rating

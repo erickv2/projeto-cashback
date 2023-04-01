@@ -17,6 +17,8 @@ router.get('/resgatar', PagesController.ShowResgatar)
 
 router.get('/consultar', PagesController.showConsultar)
 
+router.get('/erro', PagesController.showErro)
+
 
 // -----------------------------------------------------------
 
