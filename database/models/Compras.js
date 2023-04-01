@@ -2,10 +2,10 @@ const Usuarios = require('./Usuarios')
 
 module.exports = (sequelize, DataTypes) => {
     const Compras = sequelize.define('Compras', {
-        valor: DataTypes.DECIMAL(5,2),
+        valor: DataTypes.DECIMAL(9,2),
         usuarios_id: DataTypes.INTEGER,
-        cashback_compra: DataTypes.DECIMAL(5,2),
-        V
+        cashback_compra: DataTypes.DECIMAL(9,2),
+        valor_resgate: DataTypes.DECIMAL(9,2)
     }, {
         tableName: 'compras'
     }) 
