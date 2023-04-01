@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         avaliacao_loja: DataTypes.INTEGER,
         saldo_cashback: DataTypes.DECIMAL(9,2),
         total_cashback: DataTypes.DECIMAL(9,2),
+        cashback_resgatado: DataTypes.DECIMAL(9,2),
         total_gasto: DataTypes.DECIMAL(9,2),
         numero_de_compras: DataTypes.INTEGER,
         gasto_medio: DataTypes.DECIMAL(9,2)

@@ -151,9 +151,9 @@ const PagesController = {
     },
     showAdm: async (req, res) => {
 
-        const usuario = await Usuarios.findOne({ where: { id: '1' } })
+        const usuarios = await Usuarios.findAll()
 
-        return res.render('adm', { usuario })
+        return res.render('adm', { usuarios })
     },
     showFinalizado: async (req, res) => {
         return res.render('finalizado')

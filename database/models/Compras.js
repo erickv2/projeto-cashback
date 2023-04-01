@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     const Compras = sequelize.define('Compras', {
         valor: DataTypes.DECIMAL(5,2),
         usuarios_id: DataTypes.INTEGER,
-        cashback_compra: DataTypes.DECIMAL(5,2)
+        cashback_compra: DataTypes.DECIMAL(5,2),
+        V
     }, {
         tableName: 'compras'
     }) 

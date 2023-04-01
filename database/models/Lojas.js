@@ -1,6 +1,8 @@
-module.exports = (sequelize, DataType) => {
+module.exports = (sequelize, DataTypes) => {
     const Lojas = sequelize.define('Lojas', {
-        nome_loja: DataType.INTEGER
+        nome_loja: DataTypes.STRING(100),
+        cashback_percent: DataTypes.DECIMAL(9,2)
+
     })
         return Lojas
 }
