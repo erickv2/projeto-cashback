@@ -6,68 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"></head>
-    <link rel="stylesheet" href="/public/css/admStyle.css">
-    <body class="bg-dark-subtle">
-        <div class="container">
-            <table class="table table-bordered">
-              <thead class="table-light">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Coluna 1</th>
-                  <th scope="col">Coluna 2</th>
-                  <th scope="col">Coluna 3</th>
-                  <th scope="col">Coluna 4</th>
-                  <th scope="col">Coluna 5</th>
-                  <th scope="col">Coluna 6</th>
-                  <th scope="col">Coluna 7</th>
-                  <th scope="col">Coluna 8</th>
-                  <th scope="col">Coluna 9</th>
-                  <th scope="col">Coluna 10</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Dado 1</td>
-                  <td>Dado 2</td>
-                  <td>Dado 3</td>
-                  <td>Dado 4</td>
-                  <td>Dado 5</td>
-                  <td>Dado 6</td>
-                  <td>Dado 7</td>
-                  <td>Dado 8</td>
-                  <td>Dado 9</td>
-                  <td>Dado 10</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Dado 1</td>
-                  <td>Dado 2</td>
-                  <td>Dado 3</td>
-                  <td>Dado 4</td>
-                  <td>Dado 5</td>
-                  <td>Dado 6</td>
-                  <td>Dado 7</td>
-                  <td>Dado 8</td>
-                  <td>Dado 9</td>
-                  <td>Dado 10</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Dado 1</td>
-                  <td>Dado 2</td>
-                  <td>Dado 3</td>
-                  <td>Dado 4</td>
-                  <td>Dado 5</td>
-                  <td>Dado 6</td>
-                  <td>Dado 7</td>
-                  <td>Dado 8</td>
-                  <td>Dado 9</td>
-                  <td>Dado 10</td>
-                </tr>
-              </tbody>
-            </table>
+    <link rel="stylesheet" href="css/admStyle.css">
+    <body>
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container">
+            <a class="navbar-brand mx-auto" href="#">
+              <h1 class="fw-bold mb-0 h4">Meus Clientes</h1>
+            </a>
           </div>
+        </nav>
+
+        <div class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow">
+            <a class="navbar-brand mx-auto" href="#">
+              <h2 class="fw-bold mb-0 h6">Lista</h2>
+            </a>
+            <a class="navbar-brand mx-auto" href="#">
+              <h2 class="fw-bold mb-0 h6">Grupos</h2>
+            </a>
+        </div>
+    
+      </header>
+      <div class="table-container mt-5" id="divTudo">
+        <table class="table align-middle caption-top bg-light shadow" id="table">
+
+            <caption class="bg-light text-center position-relative" id="caption"><h1 class="h3">Lista de clientes</h1>
+            <p class="mb-0" id="clientesEncontrados">9.000 clientes encontrados</p>
+            <p>4.000 são participantes cadastrados</p>
+            <img src="img/search.png" id="searchBtn" alt="" class="position-absolute top-0 end-0 mt-4 me-2" style="transform: translate(-50%, -50%);">
+            </caption>
+
+            <thead><tr></tr>
+            <th class="text-center">Clientes</th>
+            <th class="text-center">Contatos</th>
+            <th class="text-center">Total gasto</th>
+            <th class="text-center">Compras</th>
+            <th class="text-center">Avaliação</th>
+            <th class="text-center">última compra</th>
+            <th class="text-center">Gasto médio</th>
+            <th class="text-center">Cliente há</th>
+            <th class="text-center">Saldo</th>
+            <th class="text-center">Créditos conquistados</th>
+            <th class="text-center">Créditos resgatados</th>
+            </thead>
+
+        <tbody class="table-group-divider">
+
+            <% usuarios.forEach(user => { %>
+            <tr>
+                <td class="text-center"><%= user.nome %></td>
+                <td class="text-center">
+                  <img src="img/whatsapp.png" alt="" id="whatsapp">
+                  <img src="img/email.png" alt="" id="email">
+                </td>
+                <td class="text-center"><%= user.total_gasto %></td>
+                <td class="text-center"><%= user.numero_de_compras %></td>
+                <td class="text-center"><%= user.avaliacao_loja %></td>
+                <td class="text-center">Ultima compra</td>
+                <td class="text-center"><%= user.gasto_medio %></td>
+                <td class="text-center">Cliente há</td>
+                <td class="text-center"><%= user.saldo_cashback %></td>
+                <td class="text-center"><%= user.total_cashback %></td>
+                <td class="text-center">Créditos resgatados</td>
+            </tr>
+            <% }) %>
+        </tbody>
+        </table>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
