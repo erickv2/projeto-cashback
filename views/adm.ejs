@@ -1,80 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"></head>
-    <link rel="stylesheet" href="css/admStyle.css">
-    <body>
-      <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container">
-            <a class="navbar-brand mx-auto" href="#">
-              <h1 class="fw-bold mb-0 h4">Meus Clientes</h1>
-            </a>
-          </div>
-        </nav>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/admStyle.css">
+</head>
 
-        <div class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow">
-            <a class="navbar-brand mx-auto" href="#">
-              <h2 class="fw-bold mb-0 h6">Lista</h2>
-            </a>
-            <a class="navbar-brand mx-auto" href="#">
-              <h2 class="fw-bold mb-0 h6">Grupos</h2>
-            </a>
-        </div>
-    
-      </header>
-      <div class="table-container mt-5" id="divTudo">
-        <table class="table align-middle caption-top bg-light shadow" id="table">
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand mx-auto" href="#">
+          <h1 class="fw-bold mb-0 h4">Meus Clientes</h1>
+        </a>
+      </div>
+    </nav>
 
-            <caption class="bg-light text-center position-relative" id="caption"><h1 class="h3">Lista de clientes</h1>
-            <p class="mb-0" id="clientesEncontrados">9.000 clientes encontrados</p>
-            <p>4.000 são participantes cadastrados</p>
-            <img src="img/search.png" id="searchBtn" alt="" class="position-absolute top-0 end-0 mt-4 me-2" style="transform: translate(-50%, -50%);">
-            </caption>
-
-            <thead><tr></tr>
-            <th class="text-center">Clientes</th>
-            <th class="text-center">Contatos</th>
-            <th class="text-center">Total gasto</th>
-            <th class="text-center">Compras</th>
-            <th class="text-center">Avaliação</th>
-            <th class="text-center">última compra</th>
-            <th class="text-center">Gasto médio</th>
-            <th class="text-center">Cliente há</th>
-            <th class="text-center">Saldo</th>
-            <th class="text-center">Créditos conquistados</th>
-            <th class="text-center">Créditos resgatados</th>
-            </thead>
-
-        <tbody class="table-group-divider">
-
-            <% usuarios.forEach(user => { %>
-            <tr>
-                <td class="text-center"><%= user.nome %></td>
-                <td class="text-center">
-                  <img src="img/whatsapp.png" alt="" id="whatsapp">
-                  <img src="img/email.png" alt="" id="email">
-                </td>
-                <td class="text-center"><%= user.total_gasto %></td>
-                <td class="text-center"><%= user.numero_de_compras %></td>
-                <td class="text-center"><%= user.avaliacao_loja %></td>
-                <td class="text-center">Ultima compra</td>
-                <td class="text-center"><%= user.gasto_medio %></td>
-                <td class="text-center">Cliente há</td>
-                <td class="text-center"><%= user.saldo_cashback %></td>
-                <td class="text-center"><%= user.total_cashback %></td>
-                <td class="text-center">Créditos resgatados</td>
-            </tr>
-            <% }) %>
-        </tbody>
-        </table>
+    <div class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow">
+      <a class="navbar-brand mx-auto" href="#">
+        <h2 class="fw-bold mb-0 h6">Lista</h2>
+      </a>
+      <a class="navbar-brand mx-auto" href="#">
+        <h2 class="fw-bold mb-0 h6">Grupos</h2>
+      </a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </header>
+  <div class="table-container mt-5" id="divTudo">
+    <table class="table align-middle caption-top bg-light shadow" id="table">
+
+
+      <caption class="bg-light text-center position-relative" id="caption">
+        <h1 class="h3">Lista de clientes</h1>
+
+        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filtroModal">
+          Filtros
+        </button>
+
+        <div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filtrar por</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-check">
+
+                  <!-- botão total gasto -->
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#total-gasto-modal">
+                    Total Gasto
+                  </button>
+                  
+                  <!-- Modal "Total Gasto" -->
+                  <div class="modal fade" id="total-gasto-modal" tabindex="-1" role="dialog"
+                    aria-labelledby="total-gasto-modal-label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="total-gasto-modal-label">Filtrar Total Gasto</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="total-gasto-operacao">Operação:</label>
+                            <select class="form-control" id="total-gasto-operacao">
+                              <option value="maior-igual">Maior ou igual a</option>
+                              <option value="maior">Maior que</option>
+                              <option value="menor-igual">Menor ou igual a</option>
+                              <option value="menor">Menor que</option>
+                              <option value="igual">Igual a</option>
+                              <option value="diferente">Diferente de</option>
+                              <option value="entre">Entre</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="total-gasto-valor">Valor:</label>
+                            <input type="text" class="form-control" id="total-gasto-valor">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Aplicar Filtro</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary">Aplicar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <button id="filterBtn" class="btn btn-outline-secondary">
+          <i class="bi bi-funnel"></i> Período
+        </button>
+
+        <p class="mb-0" id="clientesEncontrados">9.000 clientes encontrados</p>
+        <p>4.000 são participantes cadastrados</p>
+        <img src="img/search.png" id="searchBtn" alt="" class="position-absolute top-0 end-0 mt-4 me-2"
+          style="transform: translate(-50%, -50%);">
+      </caption>
+
+      <thead>
+        <tr></tr>
+        <th class="text-center">Clientes</th>
+        <th class="text-center">Contatos</th>
+        <th class="text-center">Total gasto</th>
+        <th class="text-center">Compras</th>
+        <th class="text-center">Avaliação</th>
+        <th class="text-center">última compra</th>
+        <th class="text-center">Gasto médio</th>
+        <th class="text-center">Cliente há</th>
+        <th class="text-center">Saldo</th>
+        <th class="text-center">Créditos conquistados</th>
+        <th class="text-center">Créditos resgatados</th>
+      </thead>
+
+      <tbody class="table-group-divider">
+
+        <% usuarios.forEach(user=> { %>
+          <tr>
+            <td class="text-center">
+              <%= user.nome %>
+            </td>
+            <td class="text-center">
+              <img src="img/whatsapp.png" alt="" id="whatsapp">
+              <img src="img/email.png" alt="" id="email">
+            </td>
+            <td class="text-center">
+              <%= user.total_gasto %>
+            </td>
+            <td class="text-center">
+              <%= user.numero_de_compras %>
+            </td>
+            <td class="text-center">
+              <%= user.avaliacao_loja %>
+            </td>
+            <td class="text-center">Ultima compra</td>
+            <td class="text-center">
+              <%= user.gasto_medio %>
+            </td>
+            <td class="text-center">Cliente há</td>
+            <td class="text-center">
+              <%= user.saldo_cashback %>
+            </td>
+            <td class="text-center">
+              <%= user.total_cashback %>
+            </td>
+            <td class="text-center">Créditos resgatados</td>
+          </tr>
+          <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $("#total-gasto-btn").click(function () {
+        $("#total-gasto-modal").modal("show");
+      });
+    });
+  </script>
+
 
 </body>
+
 </html>
