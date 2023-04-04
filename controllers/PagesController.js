@@ -36,7 +36,8 @@ async function buscarUsuario(telefone, criar) {
         const usuario = await Usuarios.findAll({ where: { telefone: telefone }, raw: true }).then(result => result[0])
         console.log(usuario)
         if (usuario !== undefined) { return usuario }
-        else { console.log('usuário não encontrado') }
+        else { console.log('usuário não encontrado')
+          return null}
 
     }
 
@@ -262,21 +263,18 @@ const PagesController = {
         const usuario = await buscarUsuario(telefone)
 
         console.log(cpf)
-        console.log(usuario.telefone)
         console.log(usuario)
 
+        //se o usuário não existe
+        if (usuario == null) {
+            erro = ("Este telefone não é o mesmo que foi cadastrado na loja")
+            res.render('cadastro', { erro })
+        }
         //se já cadastrou
-        if (usuario.cpf !== null) {
-            erro = ("Já existe um usuário cadastrado com este CPF.")
+        else if (usuario.cpf !== null) {
+            erro = ("Já existe um usuário cadastrado com este CPF")
             res.render('cadastro', { erro })
         }
-
-        else if (usuario.telefone == null) {
-            erro = ("Esse telefone não foi cadastrado")
-            res.render('cadastro', { erro })
-        }
-
-        //se o usuario ainda não cadastrou o cpf
         else {
             await Usuarios.update({
                 nome: req.body.nome,

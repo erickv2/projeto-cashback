@@ -3,7 +3,7 @@
 let currentCarouselItem = 0;
 
 //seta o número total de elementos do carousel - buscar forma de fazer isso automaticamente
-let maxCarouselItem = 7;
+let maxCarouselItem = 6;
 
 //cria constantes para os botões
 const nextBtn = document.getElementById('proximo');
@@ -11,6 +11,7 @@ const prevBtn = document.getElementById('prev');
 const sendBtn = document.getElementById('enviarHidden')
 const stars = document.querySelectorAll('.star');
 const rating = document.querySelector('#rating');
+const erro = document.getElementById('erro');
 nextBtn.disabled = true;
 
 
@@ -108,11 +109,12 @@ function validarCPF(cpf) {
 
 // chamar no onsubmit
 function validarFormulario() {
-  var cpf = document.getElementById("cpf").value;
+  let cpf = document.getElementById("cpf").value;
   if (!validarCPF(cpf)) {
-    alert("CPF inválido");
+    document.getElementById('erro').innerHTML = "CPF Inválido"
     return false;
   }
+  document.getElementById('erro').innerHTML = ""
   return true;
 }
 
@@ -124,15 +126,25 @@ function validarFormulario() {
 //evento de clique do botao "próximo" ---------------------------
 
 nextBtn.addEventListener("click", function () {
-  // disabilita o botao por 700ms enquanto rola a animação, previne cliques múltiplos que somariam no contador
   nextBtn.disabled = true;
+  //se houver mensagem de erro, esconde
+  // erro.hidden = true;
+  // removido para ligar o botão através da validação dos dados
+  // disabilita o botao por 700ms enquanto rola a animação, previne cliques múltiplos que somariam no contador
   // setTimeout(function () { nextBtn.disabled = false; }, 700)
   //adiciona ao contador
-  // removido para ligar o botão através da validação dos dados
   currentCarouselItem = currentCarouselItem + 1;
   //torna o botão "voltar" visível
   prevBtn.style.visibility = "visible"
   //condicional para esconder o "proximo" e aparecer o botão "enviar" quando chega ao último slide
+  if (currentCarouselItem == 3){
+    let validaCpf = validarFormulario()
+    if (validaCpf == false){
+      setTimeout(function () {
+        prevBtn.dispatchEvent(new Event("click"));
+      }, 700)
+    }
+    }
   if (currentCarouselItem == maxCarouselItem) {
     nextBtn.style.visibility = "collapse"
     sendBtn.style.visibility = "visible"
