@@ -36,8 +36,10 @@ async function buscarUsuario(telefone, criar) {
         const usuario = await Usuarios.findAll({ where: { telefone: telefone }, raw: true }).then(result => result[0])
         console.log(usuario)
         if (usuario !== undefined) { return usuario }
-        else { console.log('usuário não encontrado')
-          return null}
+        else {
+            console.log('usuário não encontrado')
+            return null
+        }
 
     }
 
@@ -121,10 +123,10 @@ const PagesController = {
             console.log(porcentagem)
             return res.render('index');
 
-        } catch(error) {
+        } catch (error) {
             return res.redirect('erro')
         }
-        
+
     },
     showErro: async (req, res) => {
 
@@ -148,7 +150,8 @@ const PagesController = {
         return res.render('acumular');
     },
     ShowResgatar: async (req, res) => {
-        return res.render('resgatar');
+        let erro;
+        return res.render('resgatar', { erro });
     },
     showConsultar: async (req, res) => {
         let usuario;
@@ -199,42 +202,56 @@ const PagesController = {
 
 
         const usuario = await buscarUsuario(telefone, false)
-        let cashbackAtual = usuario.saldo_cashback
 
-        //calcula a diferença entre o valor da compra e o saldo de cashback
-        let valorCompraResgatada = valorCompra - cashbackAtual
 
-        //debug
-        console.log(cashbackAtual)
-        console.log(valorCompraResgatada)
+        if (usuario == null) {
+            erro = ("Este usuário não existe")
+            res.render('resgatar', { erro })
+        }
 
-        // checa se o valor da compra resgatada é negativo
-
-        if (valorCompraResgatada < 0) {
-
-            //calcula o que sobra do valor de cashback
-            cashbackAtual = valorCompraResgatada * -1
-            if (usuario !== undefined) {
-                await atualizarCompras(await usuario, valorCompraResgatada);
-
-                //atualiza o saldo de cashback para a sobra
-                await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
-            } else {
-                console.log('Usuário não encontrado');
-            }
+        //se já cadastrou
+        else if (usuario.cpf == null) {
+            erro = ("Este usuário não completou o cadastro")
+            res.render('resgatar', { erro })
         }
         else {
-            cashbackAtual = 0
-            if (usuario !== undefined) {
-                await atualizarCompras(await usuario, valorCompraResgatada);
-                //zera o saldo de cashback
-                await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
-            } else {
-                console.log('Usuário não encontrado');
-            }
-        }
 
-        res.redirect('/')
+            let cashbackAtual = usuario.saldo_cashback
+
+            //calcula a diferença entre o valor da compra e o saldo de cashback
+            let valorCompraResgatada = valorCompra - cashbackAtual
+
+            //debug
+            console.log(cashbackAtual)
+            console.log(valorCompraResgatada)
+            // checa se o valor da compra resgatada é negativo
+
+            if (valorCompraResgatada < 0) {
+
+                //calcula o que sobra do valor de cashback
+                cashbackAtual = valorCompraResgatada * -1
+                if (usuario !== undefined) {
+                    await atualizarCompras(await usuario, valorCompraResgatada);
+
+                    //atualiza o saldo de cashback para a sobra
+                    await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
+                } else {
+                    console.log('Usuário não encontrado');
+                }
+            }
+            else {
+                cashbackAtual = 0
+                if (usuario !== undefined) {
+                    await atualizarCompras(await usuario, valorCompraResgatada);
+                    //zera o saldo de cashback
+                    await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
+                } else {
+                    console.log('Usuário não encontrado');
+                }
+            }
+
+            res.redirect('/')
+        }
     },
     storeConsultar: async (req, res) => {
 
