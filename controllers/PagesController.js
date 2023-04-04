@@ -155,7 +155,8 @@ const PagesController = {
     },
     showConsultar: async (req, res) => {
         let usuario;
-        return res.render('consultar', { usuario: usuario });
+        let erro;
+        return res.render('consultar', { erro , usuario});
     },
     storeAcumular: async (req, res) => {
 
@@ -259,11 +260,14 @@ const PagesController = {
         let telefone = req.body.telefone;
         telefone = telefone.replace(new RegExp('[^0-9]', 'g'), '');
         usuario = await buscarUsuario(telefone)
-        console.log(usuario)
-        id = usuario.id
-        console.log(id)
-
-        res.render('consultar', { usuario: usuario });
+        let erro = ""
+        if (usuario == null) {
+            erro = ("Este usuário não existe")
+            res.render('consultar', { erro })
+        }
+        else{
+        res.render('consultar', { erro, usuario: usuario });
+        }
     },
     storeForm: async (req, res) => {
 
