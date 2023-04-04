@@ -2,7 +2,8 @@ const path = require('path');
 const idu = 2;
 const { Usuarios } = require('../database/models')
 const { Compras } = require('../database/models')
-const { Lojas } = require('../database/models')
+const { Lojas } = require('../database/models');
+const { DECIMAL } = require('sequelize');
 
 //define a porcentagem de cashback que vai ser usada
 async function buscaPorcento() {
@@ -151,12 +152,13 @@ const PagesController = {
     },
     ShowResgatar: async (req, res) => {
         let erro;
-        return res.render('resgatar', { erro });
+        let valor;
+        return res.render('resgatar', { erro, valor });
     },
     showConsultar: async (req, res) => {
         let usuario;
         let erro;
-        return res.render('consultar', { erro , usuario});
+        return res.render('consultar', { erro, usuario });
     },
     storeAcumular: async (req, res) => {
 
@@ -201,8 +203,11 @@ const PagesController = {
         let telefone = req.body.telefone;
         telefone = telefone.replace(new RegExp('[^0-9]', 'g'), '');
 
+        let valor;
+        let erro;
 
         const usuario = await buscarUsuario(telefone, false)
+        
 
 
         if (usuario == null) {
@@ -231,27 +236,32 @@ const PagesController = {
 
                 //calcula o que sobra do valor de cashback
                 cashbackAtual = valorCompraResgatada * -1
-                if (usuario !== undefined) {
-                    await atualizarCompras(await usuario, valorCompraResgatada);
+                await atualizarCompras(await usuario, valorCompraResgatada);
 
-                    //atualiza o saldo de cashback para a sobra
-                    await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
-                } else {
-                    console.log('Usuário não encontrado');
-                }
+                //atualiza o saldo de cashback para a sobra
+                await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
+
+                //transforma cashbackAtual em uma string formatada
+                cashbackAtual = cashbackAtual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                valor = `A cobrar: R$0,00 \n\nCashback atual: ${cashbackAtual}`
             }
+
             else {
                 cashbackAtual = 0
-                if (usuario !== undefined) {
-                    await atualizarCompras(await usuario, valorCompraResgatada);
-                    //zera o saldo de cashback
-                    await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
-                } else {
-                    console.log('Usuário não encontrado');
-                }
+
+                await atualizarCompras(await usuario, valorCompraResgatada);
+                //zera o saldo de cashback
+                await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
+
+                valorCompraResgatada = valorCompraResgatada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                cashbackAtual = cashbackAtual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                
+
+                valor = `A cobrar: ${valorCompraResgatada} \n\nCashback atual: ${cashbackAtual}`
+
             }
 
-            res.redirect('/')
+            res.render('resgatar', { erro, valor })
         }
     },
     storeConsultar: async (req, res) => {
@@ -265,8 +275,8 @@ const PagesController = {
             erro = ("Este usuário não existe")
             res.render('consultar', { erro })
         }
-        else{
-        res.render('consultar', { erro, usuario: usuario });
+        else {
+            res.render('consultar', { erro, usuario: usuario });
         }
     },
     storeForm: async (req, res) => {
