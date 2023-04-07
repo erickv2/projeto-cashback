@@ -45,43 +45,31 @@ async function buscarUsuario(telefone, criar) {
     }
 
 }
-async function atualizarCompras(usuario, valorCompra) {
+async function AcumularCompras(usuario, valorCompra) {
 
+    const porcentagem = await buscaPorcento()
     //incrementa o total de compras do usuário
     let numeroDeCompras = usuario.numero_de_compras + 1
     let totalGasto = usuario.total_gasto
     let valorCashback
+    let totalCashback = usuario.total_cashback
+    let saldoCashback = usuario.saldo_cashback
 
-    // debug
-    console.log('valor compra:', valorCompra)
 
-    //testa se o valor de compra é negativo e define o cashback e o valor da compra pra 0
-    if (valorCompra < 0) {
-        valorCashback = valorCompra
-        valorCompra = 0
-    }
+    totalGasto = totalGasto + valorCompra
 
-    else {
-        //incrementa o total gasto
-        console.log('total gasto anterior: ', totalGasto)
-        totalGasto = totalGasto + valorCompra
-        console.log('total gasto atual: ', totalGasto)
-
-        //Calcula o cashback
-        valorCashback = valorCompra * porcentagem
-    }
+    //Calcula o cashback
+    valorCashback = valorCompra * porcentagem
 
     //Cacula a média de gasto
-    let mediaDeGasto = totalGasto / numeroDeCompras;
+    let mediaDeGasto = totalGasto / numeroDeCompras
+
+    //calcula saldo e total cashback
+    totalCashback = totalCashback + valorCashback
+    saldoCashback = saldoCashback + valorCashback
 
 
     let id = usuario.id
-
-    //debug
-    console.log('id: ', id)
-    console.log('numeroDeCompras: ', numeroDeCompras)
-    console.log('totalGasto: ', totalGasto)
-    console.log('mediaDeGasto: ', mediaDeGasto)
 
     //testa se a mediaDeGasto foi calculada corretamente e se a id foi estabelecida corretamente
     if (mediaDeGasto !== undefined && id !== undefined) {
@@ -90,7 +78,9 @@ async function atualizarCompras(usuario, valorCompra) {
         await Usuarios.update({
             gasto_medio: mediaDeGasto,
             total_gasto: totalGasto,
-            numero_de_compras: numeroDeCompras
+            numero_de_compras: numeroDeCompras,
+            saldo_cashback: saldoCashback,
+            total_cashback: totalCashback
         },
             { where: { id: id } });
 
@@ -112,6 +102,92 @@ async function atualizarCompras(usuario, valorCompra) {
 
 
     return valorCashback
+
+}
+
+async function ResgatarCompras(usuario, valorCompra) {
+
+    const porcentagem = await buscaPorcento()
+    const id = usuario.id
+    let totalGasto = usuario.total_gasto
+    const saldoCashback = usuario.saldo_cashback
+    //incrementa o total de compras do usuário
+    const numeroDeCompras = usuario.numero_de_compras + 1
+    let totalCashback = usuario.total_cashback
+    let cashbackResgatado = usuario.cashback_resgatado
+    let cashbackSaldoNovo
+    let valorResgate
+
+    //se o saldoCashback for maior ou igual o valor da compra, subtrai o valor da compra do saldoCashback e a compra sai de graça
+    if (saldoCashback >= valorCompra) {
+        valorResgate = valorCompra
+        cashbackSaldoNovo = saldoCashback - valorCompra
+        valorCompra = 0
+    }
+    //se o valor da compra for maior que o saldoCashback, subtrai o saldoCashback do valor da compra, zera o saldo e o valor resgatado é a diferenç
+    else {
+        valorResgate = saldoCashback
+        cashbackSaldoNovo = 0
+        valorCompra = valorCompra - saldoCashback
+    }
+
+
+
+    totalGasto = totalGasto + valorCompra
+
+
+    //Calcula o cashback
+    let valorCashback = valorCompra * porcentagem
+    cashbackSaldoNovo = cashbackSaldoNovo + valorCashback
+    totalCashback = totalCashback + valorCashback
+    cashbackTotalResgatado = cashbackResgatado + valorResgate
+
+
+    //Cacula a média de gasto
+    let mediaDeGasto = totalGasto / numeroDeCompras;
+
+
+    //testa se a mediaDeGasto foi calculada corretamente e se a id foi estabelecida corretamente
+    if (mediaDeGasto !== undefined && id !== undefined) {
+
+        //atualiza a media de gasto, total gasto e numero de compras na tabela usuario
+        await Usuarios.update({
+            gasto_medio: mediaDeGasto,
+            total_gasto: totalGasto,
+            saldo_cashback: cashbackSaldoNovo,
+            cashback_resgatado: cashbackTotalResgatado,
+            numero_de_compras: numeroDeCompras
+        },
+            { where: { id: id } });
+
+        //atualiza a tabela compras
+        await Compras.create({
+            valor: valorCompra,
+            cashback_compra: valorCashback,
+            valor_resgate: valorResgate,
+            usuarios_id: id
+        });
+
+        console.log('Compra atualizada')
+    }
+    else {
+        console.log('Erro na atualização da compra.')
+    }
+
+
+    // formata cada um dos valores para entregar o resultado
+    valorResgate = valorResgate.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    valorCompra = valorCompra.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    valorCashback = valorCashback.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    cashbackSaldoNovo = cashbackSaldoNovo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    //retorna um objeto com todos os valores calculados
+    return {
+        'Valor Resgatado': valorResgate,
+        'A pagar': valorCompra,
+        'Cashback Gerado': valorCashback,
+        'Saldo de Cashback': cashbackSaldoNovo
+    }
 
 }
 
@@ -153,7 +229,8 @@ const PagesController = {
     ShowResgatar: async (req, res) => {
         let erro;
         let valor;
-        return res.render('resgatar', { erro, valor });
+        let resultado;
+        return res.render('resgatar', { erro, valor, resultado });
     },
     showConsultar: async (req, res) => {
         let usuario;
@@ -162,108 +239,52 @@ const PagesController = {
     },
     storeAcumular: async (req, res) => {
 
-        //resgata porcentagem
-        porcentagem = await buscaPorcento()
-
-
         //pega os valores e trata
-        const valorCompra = parseFloat(req.body.valorCompra.replace(',', '.'))
+        const valorCompra = parseFloat(req.body.valorCompra.replace(/\./g, '').replace(',', '.'))
+
+        const telefone = req.body.telefone.replace(new RegExp('[^0-9]', 'g'), '')
+
+        const usuario = await buscarUsuario(telefone, true)
+
+        await AcumularCompras(await usuario, valorCompra)
+
+        res.redirect('/')
+    },
+    storeResgatar: async (req, res) => {
+
+        const valorCompra = parseFloat(req.body.valorCompra.replace(/\./g, '').replace(',', '.'))
 
         const telefone = req.body.telefone.replace(new RegExp('[^0-9]', 'g'), '');
 
         const usuario = await buscarUsuario(telefone, true);
 
-        if (usuario !== undefined) {
-            console.log(usuario);
-
-            // console.log('valorCashback:', valorCashback);
-            console.log('Cashback Atual:', await usuario.saldo_cashback, usuario.total_cashback);
-            const valorCashback = await atualizarCompras(await usuario, valorCompra);
-
-            //incrementa o saldo de cashback e total de cashback
-            await Usuarios.increment(['saldo_cashback', 'total_cashback'], { by: valorCashback, where: { id: usuario.id } });
-        } else {
-            console.log('Usuário não encontrado');
-        }
-
-        res.redirect('/')
-
-    },
-    storeResgatar: async (req, res) => {
-
-        //resgata porcentagem
-        porcentagem = await buscaPorcento()
-
-        //copiar para storeAcumular
-        // tratando os dados inseridos
-        let valorCompra = req.body.valorCompra;
-        valorCompra = valorCompra.replace(',', '.');
-
-
-        let telefone = req.body.telefone;
-        telefone = telefone.replace(new RegExp('[^0-9]', 'g'), '');
-
         let valor;
         let erro;
-
-        const usuario = await buscarUsuario(telefone, false)
-        
+        let resultado
 
 
         if (usuario == null) {
             erro = ("Este usuário não existe")
-            res.render('resgatar', { erro })
+            res.render('resgatar', { erro, resultado })
         }
 
-        //se já cadastrou
         else if (usuario.cpf == null) {
             erro = ("Este usuário não completou o cadastro")
-            res.render('resgatar', { erro })
+            res.render('resgatar', { erro, resultado })
         }
+
+        else if (usuario.saldo_cashback == 0) {
+            erro = ("O saldo deste usuário é R$0,00")
+            res.render('resgatar', { erro, resultado })
+        }
+
         else {
-
-            let cashbackAtual = usuario.saldo_cashback
-
-            //calcula a diferença entre o valor da compra e o saldo de cashback
-            let valorCompraResgatada = valorCompra - cashbackAtual
-
-            //debug
-            console.log(cashbackAtual)
-            console.log(valorCompraResgatada)
-            // checa se o valor da compra resgatada é negativo
-
-            if (valorCompraResgatada < 0) {
-
-                //calcula o que sobra do valor de cashback
-                cashbackAtual = valorCompraResgatada * -1
-                await atualizarCompras(await usuario, valorCompraResgatada);
-
-                //atualiza o saldo de cashback para a sobra
-                await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
-
-                //transforma cashbackAtual em uma string formatada
-                cashbackAtual = cashbackAtual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                valor = `A cobrar: R$0,00 \n\nCashback atual: ${cashbackAtual}`
-            }
-
-            else {
-                cashbackAtual = 0
-
-                await atualizarCompras(await usuario, valorCompraResgatada);
-                //zera o saldo de cashback
-                await Usuarios.update({ saldo_cashback: cashbackAtual }, { where: { id: usuario.id } });
-
-                valorCompraResgatada = valorCompraResgatada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                cashbackAtual = cashbackAtual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                
-
-                valor = `A cobrar: ${valorCompraResgatada} \n\nCashback atual: ${cashbackAtual}`
-
-            }
-
-            res.render('resgatar', { erro, valor })
+            resultado = await ResgatarCompras(await usuario, valorCompra)
         }
+
+        res.render('resgatar', { erro, resultado })
     },
+
     storeConsultar: async (req, res) => {
 
         //pega o telefone e trata o dado
