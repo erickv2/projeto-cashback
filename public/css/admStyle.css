@@ -12,8 +12,16 @@ body {
 
 
 #divTudo {
-    border-radius: 100px;
-    background-color: black;
+    margin: 50px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: white;
+    overflow: hidden;
+}
+
+#divTudo table {
+    /* box-shadow: 0 0 5px black; */
+    background-color: white;
 }
 
 #clientesEncontrados {
@@ -27,4 +35,10 @@ body {
 
 #searchBtn {
     max-width: 18px;
+}
+
+.tableButtons {
+    /* background-color: black; */
+    display: flex;
+    justify-content: center;
 }
