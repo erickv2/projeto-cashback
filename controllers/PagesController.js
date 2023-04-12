@@ -51,15 +51,13 @@ async function AcumularCompras(usuario, valorCompra) {
     //incrementa o total de compras do usuário
     let numeroDeCompras = usuario.numero_de_compras + 1
     let totalGasto = usuario.total_gasto
-    let valorCashback
+    let valorCashback = valorCompra * porcentagem
     let totalCashback = usuario.total_cashback
     let saldoCashback = usuario.saldo_cashback
 
 
     totalGasto = totalGasto + valorCompra
 
-    //Calcula o cashback
-    valorCashback = valorCompra * porcentagem
 
     //Cacula a média de gasto
     let mediaDeGasto = totalGasto / numeroDeCompras
@@ -154,6 +152,7 @@ async function ResgatarCompras(usuario, valorCompra) {
         await Usuarios.update({
             gasto_medio: mediaDeGasto,
             total_gasto: totalGasto,
+            total_cashback: totalCashback,
             saldo_cashback: cashbackSaldoNovo,
             cashback_resgatado: cashbackTotalResgatado,
             numero_de_compras: numeroDeCompras
