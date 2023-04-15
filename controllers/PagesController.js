@@ -283,7 +283,6 @@ const PagesController = {
 
         res.render('resgatar', { erro, resultado })
     },
-
     storeConsultar: async (req, res) => {
 
         //pega o telefone e trata o dado

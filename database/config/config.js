@@ -4,7 +4,7 @@ module.exports = {
     "password": null,
     "database": "projeto_cashback",
     "host": "127.0.0.1",
-    "dialect": "mariadb",
+    "dialect": "mysql",
     // essa linha é necessária para que os números decimais sejam reconhecidos
     dialectOptions: { decimalNumbers: true }
   },
@@ -13,7 +13,7 @@ module.exports = {
     "password": null,
     "database": "projeto_cashback",
     "host": "127.0.0.1",
-    "dialect": "mariadb",
+    "dialect": "mysql",
     dialectOptions: { decimalNumbers: true }
   },
   "production": {
@@ -21,7 +21,7 @@ module.exports = {
     "password": null,
     "database": "projeto_cashback",
     "host": "127.0.0.1",
-    "dialect": "mariadb",
+    "dialect": "mysql",
     dialectOptions: { decimalNumbers: true }
   }
 }

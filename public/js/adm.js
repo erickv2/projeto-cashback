@@ -15,8 +15,7 @@ async function showUsuarios(usuarios) {
         ${user.nome}
         </td>
         <td class="text-center">
-          <img src="img/whatsapp.png" alt="" id="whatsapp">
-          <img src="img/email.png" alt="" id="email">
+        ${user.telefone}
         </td>
         <td class="text-center">
         ${user.total_gasto}
@@ -31,14 +30,15 @@ async function showUsuarios(usuarios) {
         <td class="text-center">
           ${user.gasto_medio}
         </td>
-        <td class="text-center">Cliente há</td>
         <td class="text-center">
           ${user.saldo_cashback}
         </td>
         <td class="text-center">
           ${user.total_cashback}
         </td>
-        <td class="text-center">Créditos resgatados</td>
+        <td class="text-center">
+        ${user.cashback_resgatado}
+        </td>
       </tr>`
     })
     document.getElementsByTagName('tbody')[0].innerHTML = string
