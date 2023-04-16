@@ -47,15 +47,11 @@ router.get('/get_data', function (request, response, next) {
 
         var total_records = data[0].total;
 
-        console.log(total_records)
-
         //Total number of records with filtering
 
         database.query(`SELECT COUNT(*) as total FROM usuarios WHERE nome LIKE '%${search_value}%'`, function (error, data) {
 
             var total_records_with_filter = data[0].total;
-
-            console.log(total_records_with_filter)
 
             var query = `
             SELECT * FROM usuarios
@@ -75,6 +71,7 @@ router.get('/get_data', function (request, response, next) {
                         data_arr.push({
                             'nome' : row.nome,
                             'telefone' : row.telefone,
+                            'email' : row.email,
                             'total_gasto' : row.total_gasto,
                             'numero_de_compras' : row.numero_de_compras,
                             'avaliacao_loja' : row.avaliacao_loja,

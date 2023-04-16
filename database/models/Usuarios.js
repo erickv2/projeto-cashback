@@ -17,12 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         cashback_resgatado: DataTypes.DECIMAL(9, 2),
         total_gasto: DataTypes.DECIMAL(9, 2),
         numero_de_compras: DataTypes.INTEGER,
-        gasto_medio: DataTypes.DECIMAL(9, 2)
+        gasto_medio: DataTypes.DECIMAL(9, 2),
+        updatedAt: DataTypes.DATE
     }, {
         tableName: 'usuarios',
-        timestamps: true,
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
+        timestamps: true
     })
 
     Usuarios.associate = models => {
