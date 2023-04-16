@@ -2,8 +2,11 @@ const path = require('path');
 const idu = 2;
 const { Usuarios } = require('../database/models')
 const { Compras } = require('../database/models')
-const { Lojas } = require('../database/models');
+const { Lojas } = require('../database/models')
+const { Cashback } = require('../database/models')
 const { DECIMAL } = require('sequelize');
+
+const idLoja = 1
 
 //define a porcentagem de cashback que vai ser usada
 async function buscaPorcento() {
@@ -11,7 +14,7 @@ async function buscaPorcento() {
     //busca a loja
     let loja = await Lojas.findOne({
         where: {
-            id: 1
+            id: idLoja
         }
     })
 
@@ -20,6 +23,30 @@ async function buscaPorcento() {
 
     //retorna porcentagem
     return porcentagem
+}
+
+async function buscarCashback(usuario, loja, criar) {
+
+    // se criar = true, encontra ou cria o usuario
+    if (criar === true) {
+        await Cashback.findOrCreate({ where: { usuarios_id: usuario, lojas_id: loja } })
+        const tabelaCasback = await Cashback.findAll({ where: { usuarios_id: usuario, lojas_id: loja }, raw: true }).then(result => result[0])
+        return tabelaCasback
+    }
+
+    // se criar === false, só encontra o usuario
+    else {
+
+        const tabelaCasback = await Cashback.findAll({ where: { usuarios_id: usuario, lojas_id: loja }, raw: true }).then(result => result[0])
+        console.log(usuario)
+        if (tabelaCasback !== undefined) { return tabelaCasback }
+        else {
+            console.log('usuário não encontrado')
+            return null
+        }
+
+    }
+
 }
 
 async function buscarUsuario(telefone, criar) {
@@ -48,12 +75,15 @@ async function buscarUsuario(telefone, criar) {
 async function AcumularCompras(usuario, valorCompra) {
 
     const porcentagem = await buscaPorcento()
+
+    const tabelaCasback = await buscarCashback(usuario.id, idLoja, true)
+
     //incrementa o total de compras do usuário
-    let numeroDeCompras = usuario.numero_de_compras + 1
-    let totalGasto = usuario.total_gasto
+    let numeroDeCompras = tabelaCasback.numero_de_compras + 1
+    let totalGasto = tabelaCasback.total_gasto
     let valorCashback = valorCompra * porcentagem
-    let totalCashback = usuario.total_cashback
-    let saldoCashback = usuario.saldo_cashback
+    let totalCashback = tabelaCasback.total_cashback
+    let saldoCashback = tabelaCasback.saldo_cashback
 
 
     totalGasto = totalGasto + valorCompra
@@ -73,14 +103,14 @@ async function AcumularCompras(usuario, valorCompra) {
     if (mediaDeGasto !== undefined && id !== undefined) {
 
         //atualiza a media de gasto, total gasto e numero de compras na tabela usuario
-        await Usuarios.update({
+        await Cashback.update({
             gasto_medio: mediaDeGasto,
             total_gasto: totalGasto,
             numero_de_compras: numeroDeCompras,
             saldo_cashback: saldoCashback,
             total_cashback: totalCashback
         },
-            { where: { id: id } });
+            { where: { usuarios_id: id, lojas_id: idLoja } });
 
         //atualiza a tabela compras
         await Compras.create({
@@ -106,13 +136,15 @@ async function AcumularCompras(usuario, valorCompra) {
 async function ResgatarCompras(usuario, valorCompra) {
 
     const porcentagem = await buscaPorcento()
+    const tabelaCasback = await buscarCashback(usuario.id, idLoja, false)
+
     const id = usuario.id
-    let totalGasto = usuario.total_gasto
-    const saldoCashback = usuario.saldo_cashback
+    let totalGasto = tabelaCasback.total_gasto
+    const saldoCashback = tabelaCasback.saldo_cashback
     //incrementa o total de compras do usuário
-    const numeroDeCompras = usuario.numero_de_compras + 1
-    let totalCashback = usuario.total_cashback
-    let cashbackResgatado = usuario.cashback_resgatado
+    const numeroDeCompras = tabelaCasback.numero_de_compras + 1
+    let totalCashback = tabelaCasback.total_cashback
+    let cashbackResgatado = tabelaCasback.cashback_resgatado
     let cashbackSaldoNovo
     let valorResgate
 
@@ -149,7 +181,7 @@ async function ResgatarCompras(usuario, valorCompra) {
     if (mediaDeGasto !== undefined && id !== undefined) {
 
         //atualiza a media de gasto, total gasto e numero de compras na tabela usuario
-        await Usuarios.update({
+        await Cashback.update({
             gasto_medio: mediaDeGasto,
             total_gasto: totalGasto,
             total_cashback: totalCashback,
@@ -157,7 +189,7 @@ async function ResgatarCompras(usuario, valorCompra) {
             cashback_resgatado: cashbackTotalResgatado,
             numero_de_compras: numeroDeCompras
         },
-            { where: { id: id } });
+            { where: { usuarios_id: id, lojas_id: idLoja } });
 
         //atualiza a tabela compras
         await Compras.create({

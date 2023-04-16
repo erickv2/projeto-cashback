@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
         valor: DataTypes.DECIMAL(9,2),
         usuarios_id: DataTypes.INTEGER,
         cashback_compra: DataTypes.DECIMAL(9,2),
-        valor_resgate: DataTypes.DECIMAL(9,2)
+        valor_resgate: DataTypes.DECIMAL(9,2),
+        updatedAt: DataTypes.DATE
     }, {
         tableName: 'compras'
     }) 
