@@ -1,16 +1,34 @@
+const Usuarios = require('./Usuarios')
+const Lojas = require('./Lojas')
+
 module.exports = (sequelize, DataTypes) => {
     const Cashback = sequelize.define('Cashback', {
-        cashback_compra: DataTypes.DECIMAL(5,2),
-        cashback_total: DataTypes.DECIMAL(5,2),
-        compras_id: DataTypes.INTEGER
+        lojas_id: DataTypes.INTEGER,
+        usuarios_id: DataTypes.INTEGER,
+        avaliacao_loja: DataTypes.INTEGER,
+        saldo_cashback: DataTypes.DECIMAL(9, 2),
+        total_cashback: DataTypes.DECIMAL(9, 2),
+        cashback_resgatado: DataTypes.DECIMAL(9, 2),
+        total_gasto: DataTypes.DECIMAL(9, 2),
+        numero_de_compras: DataTypes.INTEGER,
+        gasto_medio: DataTypes.DECIMAL(9, 2),
+        updatedAt: DataTypes.DATE
+    }, {
+        tableName: 'cashback',
+        timestamps: true
     })
 
     Cashback.associate = models => {
-        Cashback.belongsTo(models.Compras, {
-            foreignKey: 'compras_id',
-            as: 'compra'
+        Cashback.belongsTo(models.Lojas, {
+            foreignKey: 'lojas_id',
+            as: 'loja'
+        })
+
+        Cashback.belongsTo(models.Usuarios, {
+            foreignKey: 'usuarios_id',
+            as: 'usuario'
         })
     }
-    
-        return Cashback
+
+    return Cashback
 }

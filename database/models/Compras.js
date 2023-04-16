@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         Compras.belongsTo(models.Usuarios, {
             foreignKey: 'usuarios_id',
             as: 'usuario'
-        }),
-        Compras.hasOne(models.Cashback, {
-            foreignKey: 'compras_id',
-            as: 'cashback'
         })
     }
 

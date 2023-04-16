@@ -11,13 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         cpf: DataTypes.INTEGER,
         sexo: DataTypes.INTEGER,
         email: DataTypes.STRING(45),
-        avaliacao_loja: DataTypes.INTEGER,
-        saldo_cashback: DataTypes.DECIMAL(9, 2),
-        total_cashback: DataTypes.DECIMAL(9, 2),
-        cashback_resgatado: DataTypes.DECIMAL(9, 2),
-        total_gasto: DataTypes.DECIMAL(9, 2),
-        numero_de_compras: DataTypes.INTEGER,
-        gasto_medio: DataTypes.DECIMAL(9, 2),
         updatedAt: DataTypes.DATE
     }, {
         tableName: 'usuarios',
@@ -28,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         Usuarios.hasMany(models.Compras, {
             foreignKey: 'usuarios_id',
             as: 'compras'
+        })
+        Usuarios.hasMany(models.Cashback, {
+            foreignKey: 'usuarios_id',
+            as: 'usuarios'
         })
     }
 

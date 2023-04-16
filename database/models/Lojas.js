@@ -8,5 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'lojas',
         timestamps: true
     })
+
+    Lojas.associate = models => {
+        Lojas.hasMany(models.Cashback, {
+            foreignKey: 'lojas_id',
+            as: 'lojas'
+        })
+    }
+
         return Lojas
 }
