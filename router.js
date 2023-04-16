@@ -54,41 +54,42 @@ router.get('/get_data', function (request, response, next) {
             var total_records_with_filter = data[0].total;
 
             var query = `
-            SELECT * FROM usuarios
-            WHERE nome LIKE '%${search_value}%'
+            SELECT usuarios.*, cashback.total_cashback, cashback.total_gasto, cashback.numero_de_compras, cashback.gasto_medio, cashback.saldo_cashback, cashback.avaliacao_loja, cashback.cashback_resgatado FROM usuarios
+            LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id
+            WHERE (cashback.lojas_id = 1) AND (nome LIKE '%${search_value}%')
             ORDER BY ${column_name} ${column_sort_order} 
             LIMIT ${start}, ${length}
             `;
 
             var data_arr = [];
 
-            database.query(query, function(error, data){
+            database.query(query, function (error, data) {
                 if (error) {
                     console.error(error);
                     // faça algo para lidar com o erro, como enviar uma resposta de erro
                 } else {
-                    data.forEach(function(row){
+                    data.forEach(function (row) {
                         data_arr.push({
-                            'nome' : row.nome,
-                            'telefone' : row.telefone,
-                            'email' : row.email,
-                            'total_gasto' : row.total_gasto,
-                            'numero_de_compras' : row.numero_de_compras,
-                            'avaliacao_loja' : row.avaliacao_loja,
-                            'gasto_medio' : row.gasto_medio,
-                            'saldo_cashback' : row.saldo_cashback,
-                            'total_cashback' : row.total_cashback,
-                            'cashback_resgatado' : row.cashback_resgatado
+                            'nome': row.nome,
+                            'telefone': row.telefone,
+                            'email': row.email,
+                            'total_gasto': row.total_gasto,
+                            'numero_de_compras': row.numero_de_compras,
+                            'avaliacao_loja': row.avaliacao_loja,
+                            'gasto_medio': row.gasto_medio,
+                            'saldo_cashback': row.saldo_cashback,
+                            'total_cashback': row.total_cashback,
+                            'cashback_resgatado': row.cashback_resgatado
                         });
                     });
-            
+
                     var output = {
-                        'draw' : draw,
-                        'iTotalRecords' : total_records,
-                        'iTotalDisplayRecords' : total_records_with_filter,
-                        'aaData' : data_arr
+                        'draw': draw,
+                        'iTotalRecords': total_records,
+                        'iTotalDisplayRecords': total_records_with_filter,
+                        'aaData': data_arr
                     };
-            
+
                     response.json(output);
                 }
             });
