@@ -77,7 +77,7 @@ INSERT INTO usuarios (nome, data_nascimento, telefone, sexo, email) VALUES
 ("Erick", "1997-03-17", "11910716379", "1", "erick@erick.com"),
 ("Erick", "1997-03-17", "11910726389", "1", "erick@erick.com");
 
-/* INSERT INTO cashback (lojas_id, usuarios_id, avaliacao_loja, saldo_cashback, total_cashback, total_gasto, numero_de_compras, gasto_medio) VALUES
+INSERT INTO cashback (lojas_id, usuarios_id, avaliacao_loja, saldo_cashback, total_cashback, total_gasto, numero_de_compras, gasto_medio) VALUES
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
@@ -93,4 +93,3 @@ INSERT INTO usuarios (nome, data_nascimento, telefone, sexo, email) VALUES
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00");
-*/

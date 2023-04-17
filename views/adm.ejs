@@ -10,6 +10,7 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
   <!-- <link rel="stylesheet" href="css/adm.css"> -->
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
@@ -42,6 +43,10 @@
       color: black;
     }
 
+    /* .table {
+      table-layout: fixed;
+    } */
+
     #whatsapp,
     #email {
       max-width: 18px;
@@ -52,11 +57,20 @@
     }
 
     .tableButtons {
-      /* background-color: black; */
       display: flex;
       justify-content: center;
     }
+
+    .table td {
+      text-align: center;
+    }
+
+    /* .table th {
+      background-color: black;
+    } */
+
   </style>
+
 </head>
 
 <body>
@@ -171,9 +185,9 @@
         <th class="text-center">Total gasto</th>
         <th class="text-center">Compras</th>
         <th class="text-center">Avaliação</th>
-        <!-- <th class="text-center">última compra</th> -->
+        <th class="text-center">última compra</th>
         <th class="text-center">Gasto médio</th>
-        <!-- <th class="text-center">Cliente há</th> -->
+        <th class="text-center">Cliente há</th>
         <th class="text-center">Saldo</th>
         <th class="text-center">Créditos conquistados</th>
         <th class="text-center">Créditos resgatados</th>
@@ -197,6 +211,11 @@
 
 <script>
 
+// $.extend( $.fn.dataTable.Editor.display.envelope.conf, {
+//     windowPadding: 50,
+//     attach:        "thead"
+// } );
+
   let datatable = $(document).ready(async function () {
     await $('.table').DataTable({
       "scrollY": "100vh",
@@ -211,20 +230,19 @@
         'url': '/get_data'
       },
       'aaSorting': [],
-        'columns': [
-          { data: 'nome' },
-          { data: 'telefone' },
-          { data: 'email' },
-          { data: 'total_gasto' },
-          { data: 'numero_de_compras' },
-          { data: 'avaliacao_loja' },
-          { data: 'gasto_medio' },
-          { data: 'saldo_cashback' },
-          { data: 'total_cashback' },
-          { data: 'cashback_resgatado' }
-        ]
+      'columns': [
+        { data: 'nome' },
+        { data: 'telefone' },
+        { data: 'email' },
+        { data: 'total_gasto' },
+        { data: 'numero_de_compras' },
+        { data: 'avaliacao_loja' },
+        { data: 'gasto_medio' },
+        { data: 'saldo_cashback' },
+        { data: 'total_cashback' },
+        { data: 'cashback_resgatado' }
+      ]
     });
-
   });
 
 </script>
