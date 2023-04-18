@@ -10,7 +10,7 @@ router.get('/cadastro', PagesController.showCadastro)
 
 router.get('/adm', PagesController.showAdm)
 
-router.get('/get_data', function (request, response, next) {
+router.get('/usuarios', function (request, response, next) {
 
     var draw = request.query.draw;
 

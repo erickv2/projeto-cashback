@@ -47,7 +47,7 @@
       table-layout: fixed;
     } */
 
-    #whatsapp,
+    .whatsapp,
     #email {
       max-width: 18px;
     }
@@ -180,8 +180,8 @@
       <thead>
         <tr></tr>
         <th class="text-center">Clientes</th>
-        <th class="text-center">Contatos</th>
-        <th class="text-center">Email</th>
+        <th class="text-center">Telefone</th>
+        <th class="text-center">E-mail</th>
         <th class="text-center">Total gasto</th>
         <th class="text-center">Compras</th>
         <th class="text-center">Avaliação</th>
@@ -212,6 +212,7 @@
 <script>
 
 
+
   let datatable = $(document).ready(async function () {
     await $('.table').DataTable({
 
@@ -224,12 +225,22 @@
       'serverSide': true,
       'serverMethod': 'get',
       'ajax': {
-        'url': '/get_data'
+        'url': '/usuarios'
       },
       'aaSorting': [],
       'columns': [
         { data: 'nome' },
-        { data: 'telefone' },
+        { data: 'telefone',
+      
+        render: function (data, type) {
+                    if (type === 'display') {
+                        let link = `tel:${data}`;
+ 
+                        return `<a title = ${data} href="` + link + '">' + `<img src="img/whatsapp.png" class="whatsapp" alt="">` + '</a>';
+                    }
+ 
+                    return data;
+                }},
         { data: 'email' },
         { data: 'total_gasto' },
         { data: 'numero_de_compras' },
