@@ -65,9 +65,9 @@
       text-align: center;
     }
 
-    /* .table th {
-      background-color: black;
-    } */
+     .table th {
+      position:relative;
+    } 
 
   </style>
 
@@ -171,8 +171,8 @@
           <i class="bi bi-funnel"></i> Período
         </button>
 
-        <p class="mb-0" id="clientesEncontrados">9.000 clientes encontrados</p>
-        <p>4.000 são participantes cadastrados</p>
+        <p class="mb-0" id="clientesEncontrados"><%= totalUsuarios %> clientes encontrados</p>
+        <p><%= totalCadastrados %> são participantes cadastrados</p>
         <!-- <img src="img/search.png" id="searchBtn" alt="" class="position-absolute top-0 end-0 mt-4 me-2"
           style="transform: translate(-50%, -50%);"> -->
       </caption>
@@ -185,9 +185,9 @@
         <th class="text-center">Total gasto</th>
         <th class="text-center">Compras</th>
         <th class="text-center">Avaliação</th>
-        <th class="text-center">última compra</th>
+        <!-- <th class="text-center">última compra</th> -->
         <th class="text-center">Gasto médio</th>
-        <th class="text-center">Cliente há</th>
+        <!-- <th class="text-center">Cliente há</th> -->
         <th class="text-center">Saldo</th>
         <th class="text-center">Créditos conquistados</th>
         <th class="text-center">Créditos resgatados</th>
@@ -211,14 +211,11 @@
 
 <script>
 
-// $.extend( $.fn.dataTable.Editor.display.envelope.conf, {
-//     windowPadding: 50,
-//     attach:        "thead"
-// } );
 
   let datatable = $(document).ready(async function () {
     await $('.table').DataTable({
-      "scrollY": "100vh",
+
+      "responsive": true,
       "scrollCollapse": true,
       "search": {
         "searchPanel": true

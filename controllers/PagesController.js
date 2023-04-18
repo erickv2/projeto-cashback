@@ -1,10 +1,12 @@
 const path = require('path');
 const idu = 2;
-const { Usuarios } = require('../database/models')
+const { Usuarios, sequelize } = require('../database/models')
 const { Compras } = require('../database/models')
 const { Lojas } = require('../database/models')
 const { Cashback } = require('../database/models')
 const { DECIMAL } = require('sequelize');
+const { QueryTypes } = require('sequelize');
+const { Op } = require("sequelize");
 
 const idLoja = 1
 
@@ -248,8 +250,17 @@ const PagesController = {
     showAdm: async (req, res) => {
 
         const usuarios = await Usuarios.findAll()
+        const totalUsuarios = await Cashback.count({where: {lojas_id: idLoja}})
+        const totalCadastrados = await sequelize.query(
+            'SELECT COUNT(*) AS total FROM usuarios LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id WHERE (cashback.lojas_id = 1) AND (cpf IS NOT NULL)',
+            {
+              type: QueryTypes.SELECT
+            }
+          ).then(result => result[0].total)
+        console.log(totalUsuarios)
+        console.log(totalCadastrados)
 
-        return res.render('adm', { usuarios })
+        return res.render('adm', { usuarios, totalUsuarios, totalCadastrados })
     },
     showFinalizado: async (req, res) => {
         return res.render('finalizado')

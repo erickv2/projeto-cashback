@@ -43,13 +43,13 @@ router.get('/get_data', function (request, response, next) {
 
     //Total number of records without filtering
 
-    database.query("SELECT COUNT(*) as total FROM usuarios", function (error, data) {
+    database.query("SELECT COUNT(*) AS total FROM cashback AS t WHERE (t.lojas_id = 1)", function (error, data) {
 
         var total_records = data[0].total;
 
         //Total number of records with filtering
 
-        database.query(`SELECT COUNT(*) as total FROM usuarios WHERE nome LIKE '%${search_value}%'`, function (error, data) {
+        database.query(`SELECT COUNT(*) AS total FROM usuarios LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id WHERE (cashback.lojas_id = 1) AND (nome LIKE '%${search_value}%')`, function (error, data) {
 
             var total_records_with_filter = data[0].total;
 
