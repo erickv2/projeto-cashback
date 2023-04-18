@@ -48,7 +48,7 @@
     } */
 
     .whatsapp,
-    #email {
+    .email {
       max-width: 18px;
     }
 
@@ -65,10 +65,9 @@
       text-align: center;
     }
 
-     .table th {
-      position:relative;
-    } 
-
+    .table th {
+      position: relative;
+    }
   </style>
 
 </head>
@@ -171,8 +170,12 @@
           <i class="bi bi-funnel"></i> Período
         </button>
 
-        <p class="mb-0" id="clientesEncontrados"><%= totalUsuarios %> clientes encontrados</p>
-        <p><%= totalCadastrados %> são participantes cadastrados</p>
+        <p class="mb-0" id="clientesEncontrados">
+          <%= totalUsuarios %> clientes encontrados
+        </p>
+        <p>
+          <%= totalCadastrados %> são participantes cadastrados
+        </p>
         <!-- <img src="img/search.png" id="searchBtn" alt="" class="position-absolute top-0 end-0 mt-4 me-2"
           style="transform: translate(-50%, -50%);"> -->
       </caption>
@@ -230,25 +233,39 @@
       'aaSorting': [],
       'columns': [
         { data: 'nome' },
-        { data: 'telefone',
-      
-        render: function (data, type) {
-                    if (type === 'display') {
-                        let link = `tel:${data}`;
- 
-                        return `<a title = ${data} href="` + link + '">' + `<img src="img/whatsapp.png" class="whatsapp" alt="">` + '</a>';
-                    }
- 
-                    return data;
-                }},
-        { data: 'email' },
-        { data: 'total_gasto' },
-        { data: 'numero_de_compras' },
-        { data: 'avaliacao_loja' },
-        { data: 'gasto_medio' },
-        { data: 'saldo_cashback' },
-        { data: 'total_cashback' },
-        { data: 'cashback_resgatado' }
+        {
+          data: 'telefone',
+
+          render: function (data, type) {
+            if (type === 'display') {
+              let link = `tel:${data}`;
+
+              return `<a title = ${data} href="` + link + '">' + `<img src="img/whatsapp.png" class="whatsapp" alt="">` + '</a>';
+            }
+
+            return data;
+          }
+        },
+        {
+          data: 'email',
+
+          render: function (data, type) {
+            if (type === 'display') {
+              let link = `mailto:${data}`;
+
+              return `<a title = ${data} href="` + link + '">' + `<img src="img/email.png" class="email" alt="">` + '</a>';
+            }
+
+            return data;
+          }
+        },
+      { data: 'total_gasto' },
+      { data: 'numero_de_compras' },
+      { data: 'avaliacao_loja' },
+      { data: 'gasto_medio' },
+      { data: 'saldo_cashback' },
+      { data: 'total_cashback' },
+      { data: 'cashback_resgatado' }
       ]
     });
   });
