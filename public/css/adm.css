@@ -1,44 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-body {
-    font-family: 'Montserrat', sans-serif;
-	background-color: #00a898;
-}
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #00a898;
+    }
 
-#caption h1 {
-    font-weight: bold;
-    color: black;
-}
+    #caption h1 {
+      font-weight: bold;
+      color: black;
+    }
 
 
-#divTudo {
-    margin: 50px;
-    padding: 20px;
-    border-radius: 20px;
-    background-color: white;
-    overflow: hidden;
-}
+    #divTudo {
+      margin: 50px;
+      padding: 20px;
+      border-radius: 20px;
+      background-color: white;
+      overflow: hidden;
+    }
 
-#divTudo table {
-    /* box-shadow: 0 0 5px black; */
-    background-color: white;
-}
+    #divTudo table {
+      /* box-shadow: 0 0 5px black; */
+      background-color: white;
+    }
 
-#clientesEncontrados {
-    font-weight: bold;
-    color: black;
-}
+    #clientesEncontrados {
+      font-weight: bold;
+      color: black;
+    }
 
-#whatsapp, #email {
-    max-width: 18px;
-}
+    /* .table {
+      table-layout: fixed;
+    } */
 
-#searchBtn {
-    max-width: 18px;
-}
+    .whatsapp,
+    .email {
+      max-width: 18px;
+    }
 
-.tableButtons {
-    /* background-color: black; */
-    display: flex;
-    justify-content: center;
-}
+    #searchBtn {
+      max-width: 18px;
+    }
+
+    .tableButtons {
+      display: flex;
+      justify-content: center;
+    }
+
+    .table td {
+      text-align: center;
+    }
+
+    .table th {
+      position: relative;
+    }
