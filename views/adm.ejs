@@ -217,8 +217,9 @@
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/locale/pt-br.js"></script>
 <script>
   dayjs.extend(window.dayjs_plugin_relativeTime);
-  dayjs.extend(window.dayjs_locale_pt_br)
-  dayjs.locale(window.dayjs_locale_zh_cn)
+  dayjs.locale('pt-br')
+  let aaaa = dayjs('2020-04-04').locale('pt-br').format()
+  console.log(aaaa)
   // var customLocale = window.dayjs_locale_zh_cn
   </script>
 
