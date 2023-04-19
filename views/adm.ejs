@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
   <meta charset="UTF-8">
@@ -190,7 +190,7 @@
         <th class="text-center">Avaliação</th>
         <!-- <th class="text-center">última compra</th> -->
         <th class="text-center">Gasto médio</th>
-        <!-- <th class="text-center">Cliente há</th> -->
+        <th class="text-center">Cliente há</th>
         <th class="text-center">Saldo</th>
         <th class="text-center">Créditos conquistados</th>
         <th class="text-center">Créditos resgatados</th>
@@ -212,15 +212,25 @@
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/relativeTime.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/locale/pt-br.js"></script>
 <script>
+  dayjs.extend(window.dayjs_plugin_relativeTime);
+  dayjs.extend(window.dayjs_locale_pt_br)
+  dayjs.locale(window.dayjs_locale_zh_cn)
+  // var customLocale = window.dayjs_locale_zh_cn
+  </script>
 
-
-
+<script>
   let datatable = $(document).ready(async function () {
     await $('.table').DataTable({
 
       "responsive": true,
       "scrollCollapse": true,
+      "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+        },
       "search": {
         "searchPanel": true
       },
@@ -243,6 +253,8 @@
               return `<a title = ${data} href="` + link + '">' + `<img src="img/whatsapp.png" class="whatsapp" alt="">` + '</a>';
             }
 
+            console.log('dayjs.duration(1, "minutes").locale("pt-br").humanize()')
+
             return data;
           }
         },
@@ -259,17 +271,32 @@
             return data;
           }
         },
-      { data: 'total_gasto' },
-      { data: 'numero_de_compras' },
-      { data: 'avaliacao_loja' },
-      { data: 'gasto_medio' },
-      { data: 'saldo_cashback' },
-      { data: 'total_cashback' },
-      { data: 'cashback_resgatado' }
+        { data: 'total_gasto' },
+        { data: 'numero_de_compras' },
+        { data: 'avaliacao_loja' },
+        { data: 'gasto_medio' },
+        {
+          data: 'createdAt',
+
+          render: function (data, type) {
+            
+            if (type === 'display') {
+
+              let date = dayjs(data).fromNow(true);
+
+              return date;
+            }
+
+            return data;
+          }
+
+        },
+        { data: 'saldo_cashback' },
+        { data: 'total_cashback' },
+        { data: 'cashback_resgatado' }
       ]
     });
   });
-
 </script>
 
 </html>

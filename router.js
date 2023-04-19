@@ -77,6 +77,7 @@ router.get('/usuarios', function (request, response, next) {
                             'numero_de_compras': row.numero_de_compras,
                             'avaliacao_loja': row.avaliacao_loja,
                             'gasto_medio': row.gasto_medio,
+                            'createdAt': row.createdAt, 
                             'saldo_cashback': row.saldo_cashback,
                             'total_cashback': row.total_cashback,
                             'cashback_resgatado': row.cashback_resgatado
