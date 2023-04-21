@@ -1,5 +1,4 @@
 const path = require('path');
-const idu = 2;
 const { Usuarios, sequelize } = require('../database/models')
 const { Compras } = require('../database/models')
 const { Lojas } = require('../database/models')
@@ -7,11 +6,28 @@ const { Cashback } = require('../database/models')
 const { DECIMAL } = require('sequelize');
 const { QueryTypes } = require('sequelize');
 const { Op } = require("sequelize");
+const dotenv = require('dotenv').config()
+const accountSid = process.env.TWILIO_ACCOUNT_SID// Your Account SID from www.twilio.com/console
+const authToken = process.env.TWILIO_AUTH_TOKEN  // Your Auth Token from www.twilio.com/console
+const telNumber = process.env.TWILIO_NUMBER
+const idLoja = process.env.ID_LOJA
+let client = require('twilio')(accountSid, authToken,{
+    lazyLoading: false,
+    autoRetry: true,
+    maxRetries: 3
+})
 
-const idLoja = 1
-
+async function enviaSMS(tel){
+    client.messages
+  .create({
+     body: 'Bem vindo ao sistema de cashback da loja nomedaloja. Por favor complete seu cadastro no link a seguir: https://localhost:3000/cadastro?idLoja=1',
+     from: telNumber,
+     to: `+55${tel}`
+   })
+  .then(message => console.log(message.sid));   
+}
 //define a porcentagem de cashback que vai ser usada
-async function buscaPorcento() {
+async function buscaPorcento(id) {
 
     //busca a loja
     let loja = await Lojas.findOne({
@@ -244,8 +260,10 @@ const PagesController = {
 
     },
     showCadastro: async (req, res) => {
+        let id = req.params.id
+        console.log(id)
         let erro;
-        return res.render('cadastro', { erro });
+        return res.render('cadastro', { erro, id });
     },
     showAdm: async (req, res) => {
 
@@ -342,6 +360,8 @@ const PagesController = {
         }
     },
     storeForm: async (req, res) => {
+        let id = req.params.id
+        console.log(id)
 
         //tratando dados
         let data = req.body.dataNascimento;

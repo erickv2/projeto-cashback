@@ -14,4 +14,3 @@ app.use(router)
 app.use('/api/v1', routerApi)
 
 app.listen(3000)
-

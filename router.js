@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/', PagesController.showIndex)
 
-router.get('/cadastro', PagesController.showCadastro)
+router.get('/cadastro/:id', PagesController.showCadastro)
 
 router.get('/adm', PagesController.showAdm)
 
@@ -101,7 +101,7 @@ router.get('/usuarios', function (request, response, next) {
 
 });
 
-router.get('/finalizado', PagesController.showFinalizado)
+router.get('/createdForm/finalizado', PagesController.showFinalizado)
 
 router.get('/acumular', PagesController.showAcumular)
 
@@ -120,6 +120,6 @@ router.post('/store-acumular', PagesController.storeAcumular)
 
 router.post('/store-consultar', PagesController.storeConsultar)
 
-router.post('/createdForm', PagesController.storeForm)
+router.post('/createdForm/:id', PagesController.storeForm)
 
 module.exports = router

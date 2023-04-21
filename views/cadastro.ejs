@@ -14,7 +14,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
     integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
   <div class="container-fluid">
     <div class="row justify-content-center mt-5">
       <section class="col-12 colsm-6 col-md-4">
-        <form class="form-container" method="POST" action="/createdForm">
+        <form class="form-container" method="POST" action="/createdForm/<%= id %>">
           <h4 class="text-center mt-4 mb-5" id="bemvindo">BEM VINDO</h4>
           <h6 class="text-center mt-4 mb-5" id="erro" name="erro"><%= erro %></h6>
           <div id="carouselExampleControls" class="carousel slide" data-bs-interval="false" data-bs-touch="false">
