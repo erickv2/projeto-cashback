@@ -14,7 +14,7 @@ connection.connect(function(error){
 	}
 	else
 	{
-		console.log('MySQL Database is connected Successfully');
+		console.log('Banco de dados conectado com sucesso!');
 	}
 });
 
