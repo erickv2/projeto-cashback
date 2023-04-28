@@ -8,7 +8,9 @@ router.get('/', PagesController.showIndex)
 
 router.get('/cadastro/:id', PagesController.showCadastro)
 
-router.get('/adm', PagesController.showAdm)
+router.get('/adm/home', PagesController.showAdm)
+
+router.get('/adm/login', PagesController.showCadastroAdm)
 
 router.get('/usuarios', function (request, response, next) {
 

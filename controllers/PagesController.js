@@ -241,6 +241,8 @@ async function ResgatarCompras(usuario, valorCompra) {
 }
 
 const PagesController = {
+
+    // ------------------------------------------- GET ----------------------------------
     showIndex: async (req, res) => {
 
         //checa conexão com banco de dados
@@ -264,6 +266,9 @@ const PagesController = {
         console.log(id)
         let erro;
         return res.render('cadastro', { erro, id });
+    },
+    showCadastroAdm: async (req, res) => {
+        return res.render('login-adm')
     },
     showAdm: async (req, res) => {
 
@@ -297,6 +302,10 @@ const PagesController = {
         let erro;
         return res.render('consultar', { erro, usuario });
     },
+
+
+    // ----------------------------------- POST ------------------------------
+
     storeAcumular: async (req, res) => {
 
         //pega os valores e trata
