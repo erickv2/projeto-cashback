@@ -1,19 +1,18 @@
 const path = require("path");
-const { Usuarios, sequelize } = require("../database/models");
-const { Compras } = require("../database/models");
-const { Lojas } = require("../database/models");
-const { Cashback } = require("../database/models");
-const { Logins } = require("../database/models");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
+const dotenv = require("dotenv").config();
+
 const { DECIMAL } = require("sequelize");
 const { QueryTypes } = require("sequelize");
 const { Op } = require("sequelize");
-const dotenv = require("dotenv").config();
+const { Usuarios, Compras, Lojas, Cashback, Logins, sequelize } = require("../database/models");
+
 const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
 const telNumber = process.env.TWILIO_NUMBER;
 const idLoja = process.env.ID_LOJA;
+
 let client = require("twilio")(accountSid, authToken, {
   lazyLoading: false,
   autoRetry: true,
@@ -292,8 +291,10 @@ const PagesController = {
     return res.render("login-adm");
   },
   showAdm: async (req, res) => {
+    
+    const idLojaCookie = req.cookies.idLoja
     const usuarios = await Usuarios.findAll();
-    const totalUsuarios = await Cashback.count({ where: { lojas_id: idLoja } });
+    const totalUsuarios = await Cashback.count({ where: { lojas_id: idLojaCookie } });
     const totalCadastrados = await sequelize
       .query(
         "SELECT COUNT(*) AS total FROM usuarios LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id WHERE (cashback.lojas_id = 1) AND (cpf IS NOT NULL)",
@@ -441,6 +442,7 @@ const PagesController = {
     
     if(validaSenha){
       req.session.loginAdm = true;
+      res.cookie('idLoja', login.lojas_id)
       res.redirect("/adm/home");
     } else {
       console.log('Usuário errado')

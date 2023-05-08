@@ -10,6 +10,9 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+var cookieParser = require('cookie-parser')
+
+app.use(cookieParser())
 
 app.use(session({ secret: "ultrassecreto" }));
 
@@ -17,9 +20,9 @@ app.use(
 
     (req, res, next) => {
         if(req.session.loginAdm){
-            console.log("Administrador logado....");
+            console.log("Administrador logado");
         } else {
-            console.log("Visita qualquer... ");
+            console.log("Visita qualquer");
         }
         next();
     }

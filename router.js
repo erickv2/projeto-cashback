@@ -15,6 +15,8 @@ router.get('/adm/login', PagesController.showCadastroAdm)
 
 router.get('/usuarios', function (request, response, next) {
 
+    var idLojaCookie = request.cookies.idLoja
+
     var draw = request.query.draw;
 
     var start = request.query.start;
@@ -46,20 +48,20 @@ router.get('/usuarios', function (request, response, next) {
 
     //Total number of records without filtering
 
-    database.query("SELECT COUNT(*) AS total FROM cashback AS t WHERE (t.lojas_id = 1)", function (error, data) {
+    database.query(`SELECT COUNT(*) AS total FROM cashback AS t WHERE (t.lojas_id = ${idLojaCookie})`, function (error, data) {
 
         var total_records = data[0].total;
 
         //Total number of records with filtering
 
-        database.query(`SELECT COUNT(*) AS total FROM usuarios LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id WHERE (cashback.lojas_id = 1) AND (nome LIKE '%${search_value}%')`, function (error, data) {
+        database.query(`SELECT COUNT(*) AS total FROM usuarios LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id WHERE (cashback.lojas_id = ${idLojaCookie}) AND (nome LIKE '%${search_value}%')`, function (error, data) {
 
             var total_records_with_filter = data[0].total;
 
             var query = `
             SELECT usuarios.*, cashback.total_cashback, cashback.total_gasto, cashback.numero_de_compras, cashback.gasto_medio, cashback.saldo_cashback, cashback.avaliacao_loja, cashback.cashback_resgatado FROM usuarios
             LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id
-            WHERE (cashback.lojas_id = 1) AND (nome LIKE '%${search_value}%')
+            WHERE (cashback.lojas_id = ${idLojaCookie}) AND (nome LIKE '%${search_value}%')
             ORDER BY ${column_name} ${column_sort_order} 
             LIMIT ${start}, ${length}
             `;
