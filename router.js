@@ -1,6 +1,7 @@
 const express = require('express');
 const PagesController = require('./controllers/PagesController');
 var database = require('./public/js/database');
+const verificaSeLogado = require('./middlewares/verificaSeLogado');
 
 const router = express.Router()
 
@@ -8,7 +9,7 @@ router.get('/', PagesController.showIndex)
 
 router.get('/cadastro/:id', PagesController.showCadastro)
 
-router.get('/adm/home', PagesController.showAdm)
+router.get('/adm/home', verificaSeLogado, PagesController.showAdm)
 
 router.get('/adm/login', PagesController.showCadastroAdm)
 
@@ -115,6 +116,8 @@ router.get('/erro', PagesController.showErro)
 
 
 // -----------------------------------------------------------
+
+router.post('/adm/home', PagesController.AdmAuth)
 
 router.post('/store-resgatar', PagesController.storeResgatar)
 

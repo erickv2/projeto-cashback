@@ -14,6 +14,19 @@ CREATE TABLE lojas
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE logins
+(
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	PRIMARY KEY (id),
+    nome_usuario VARCHAR(50),
+    senha varchar(64),
+    lojas_id INT UNSIGNED,
+    adm tinyint,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT fk_logins_lojas foreign key (lojas_id) REFERENCES lojas(id)
+);
+
 CREATE TABLE usuarios
 (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -93,3 +106,7 @@ INSERT INTO cashback (lojas_id, usuarios_id, avaliacao_loja, saldo_cashback, tot
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
 ("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00");
+
+INSERT INTO logins (nome_usuario, senha, lojas_id, adm) VALUES
+("acaicaieiras", "$2b$10$DRNCIbY.eflzCZZsR/uJU.LxmUJuXohpFDc6PfWAszHiRUBb0UUka", "1", "0"),
+("zicoflamengo", "$2b$10$DRNCIbY.eflzCZZsR/uJU.LxmUJuXohpFDc6PfWAszHiRUBb0UUka", "1", "1");

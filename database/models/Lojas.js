@@ -1,3 +1,6 @@
+const Logins = require('./Logins')
+
+
 module.exports = (sequelize, DataTypes) => {
     const Lojas = sequelize.define('Lojas', {
         nome_loja: DataTypes.STRING(100),
@@ -12,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     Lojas.associate = models => {
         Lojas.hasMany(models.Cashback, {
             foreignKey: 'lojas_id',
-            as: 'lojas'
+            as: 'cashback'
         })
     }
 
