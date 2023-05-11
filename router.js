@@ -99,6 +99,8 @@ router.get('/usuarios', function (request, response, next) {
                     };
 
                     response.json(output);
+
+                    next()
                 }
             });
 
@@ -122,6 +124,8 @@ router.get('/erro', PagesController.showErro)
 // -----------------------------------------------------------
 
 router.post('/adm/home', PagesController.AdmAuth)
+
+router.post('/', PagesController.LojistaAuth)
 
 router.post('/store-resgatar', PagesController.storeResgatar)
 

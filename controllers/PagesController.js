@@ -456,6 +456,21 @@ const PagesController = {
       console.log("Usuário errado");
     }
   },
+  LojistaAuth: async (req, res) => {
+    const { email, senha } = req.body;
+
+    const loginLojista = await buscarLogin(email, senha);
+
+    const validaSenha = await bcrypt.compare(senha, loginLojista.senha);
+
+    if (validaSenha) {
+      req.session.loginLoja = true;
+      res.cookie("idLoja", loginLojista.lojas_id);
+      res.redirect("/");
+    } else {
+      console.log("Usuário errado");
+    }
+  }
 };
 
 module.exports = PagesController;

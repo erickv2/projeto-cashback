@@ -3,7 +3,7 @@
     body {
       font-family: 'Montserrat', sans-serif;
       background-color: #00a898;
-      font-size: 12px;
+      font-size: 15px;
     }
 
     #caption h1 {
@@ -28,6 +28,7 @@
     #clientesEncontrados {
       font-weight: bold;
       color: black;
+      margin-top: 2vh;
     }
 
     /* .table {

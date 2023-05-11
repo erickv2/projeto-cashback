@@ -22,7 +22,20 @@ app.use(
         if(req.session.loginAdm){
             console.log("Administrador logado");
         } else {
-            console.log("Visita qualquer");
+            console.log("Administrador deslogado");
+        }
+        next();
+    }
+
+)
+
+app.use(
+
+    (req, res, next) => {
+        if(req.session.loginLoja){
+            console.log("Lojista logado");
+        } else {
+            console.log("Lojista deslogado");
         }
         next();
     }
