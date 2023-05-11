@@ -6,7 +6,14 @@ const dotenv = require("dotenv").config();
 const { DECIMAL } = require("sequelize");
 const { QueryTypes } = require("sequelize");
 const { Op } = require("sequelize");
-const { Usuarios, Compras, Lojas, Cashback, Logins, sequelize } = require("../database/models");
+const {
+  Usuarios,
+  Compras,
+  Lojas,
+  Cashback,
+  Logins,
+  sequelize,
+} = require("../database/models");
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
@@ -106,14 +113,11 @@ async function buscarLogin(nomeUsuario, senha) {
     raw: true,
   }).then((result) => result[0]);
   console.log(login);
-  console.log(login.senha)
-  
+  console.log(login.senha);
+
   if (login !== undefined) {
-
     return login;
-
   } else {
-
     console.log("usuário não encontrado");
     return null;
   }
@@ -287,14 +291,18 @@ const PagesController = {
     let erro;
     return res.render("cadastro", { erro, id });
   },
-  showCadastroAdm: async (req, res) => {
+  showLoginAdm: async (req, res) => {
     return res.render("login-adm");
   },
+  showLoginLoja: async (req, res) => {
+    return res.render("login-loja");
+  },
   showAdm: async (req, res) => {
-    
-    const idLojaCookie = req.cookies.idLoja
+    const idLojaCookie = req.cookies.idLoja;
     const usuarios = await Usuarios.findAll();
-    const totalUsuarios = await Cashback.count({ where: { lojas_id: idLojaCookie } });
+    const totalUsuarios = await Cashback.count({
+      where: { lojas_id: idLojaCookie },
+    });
     const totalCadastrados = await sequelize
       .query(
         "SELECT COUNT(*) AS total FROM usuarios LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id WHERE (cashback.lojas_id = 1) AND (cpf IS NOT NULL)",
@@ -436,16 +444,16 @@ const PagesController = {
   AdmAuth: async (req, res) => {
     const { email, senha } = req.body;
 
-    const login = await buscarLogin(email, senha)
+    const login = await buscarLogin(email, senha);
 
     const validaSenha = await bcrypt.compare(senha, login.senha);
-    
-    if(validaSenha){
+
+    if (validaSenha) {
       req.session.loginAdm = true;
-      res.cookie('idLoja', login.lojas_id)
+      res.cookie("idLoja", login.lojas_id);
       res.redirect("/adm/home");
     } else {
-      console.log('Usuário errado')
+      console.log("Usuário errado");
     }
   },
 };

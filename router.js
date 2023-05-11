@@ -11,7 +11,9 @@ router.get('/cadastro/:id', PagesController.showCadastro)
 
 router.get('/adm/home', verificaSeLogado, PagesController.showAdm)
 
-router.get('/adm/login', PagesController.showCadastroAdm)
+router.get('/adm/login', PagesController.showLoginAdm)
+
+router.get('/loja/login', PagesController.showLoginLoja)
 
 router.get('/usuarios', function (request, response, next) {
 
