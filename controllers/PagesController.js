@@ -107,13 +107,11 @@ async function buscarUsuario(telefone, criar) {
   }
 }
 
-async function buscarLogin(nomeUsuario, senha) {
+async function buscarLogin(nomeUsuario, adm) {
   const login = await Logins.findAll({
-    where: { nome_usuario: nomeUsuario },
+    where: { nome_usuario: nomeUsuario, adm: adm },
     raw: true,
   }).then((result) => result[0]);
-  console.log(login);
-  console.log(login.senha);
 
   if (login !== undefined) {
     return login;
@@ -292,10 +290,12 @@ const PagesController = {
     return res.render("cadastro", { erro, id });
   },
   showLoginAdm: async (req, res) => {
-    return res.render("login-adm");
+    let erro
+    return res.render("login-adm", { erro });
   },
   showLoginLoja: async (req, res) => {
-    return res.render("login-loja");
+    let erro
+    return res.render("login-loja", { erro });
   },
   showAdm: async (req, res) => {
     const idLojaCookie = req.cookies.idLoja;
@@ -391,7 +391,7 @@ const PagesController = {
       res.render("consultar", { erro, usuario: usuario });
     }
   },
-  storeForm: async (req, res) => {
+  storeCadastro: async (req, res) => {
     let id = req.params.id;
     console.log(id);
 
@@ -444,33 +444,46 @@ const PagesController = {
   AdmAuth: async (req, res) => {
     const { email, senha } = req.body;
 
-    const login = await buscarLogin(email, senha);
+    const loginAdm = await buscarLogin(email, 1);
 
-    const validaSenha = await bcrypt.compare(senha, login.senha);
-
-    if (validaSenha) {
+    if (loginAdm == null) {
+      erro = "Usuário não encontrado";
+      res.render("login-adm", { erro });
+    }
+    else{
+      const validaSenha = await bcrypt.compare(senha, loginAdm.senha);
+      if (validaSenha) {
       req.session.loginAdm = true;
-      res.cookie("idLoja", login.lojas_id);
+      res.cookie("idLoja", loginAdm.lojas_id);
       res.redirect("/adm/home");
     } else {
-      console.log("Usuário errado");
-    }
+      erro = "Senha incorreta";
+      res.render("login-adm", { erro });
+    }}
+    
   },
   LojistaAuth: async (req, res) => {
     const { email, senha } = req.body;
 
-    const loginLojista = await buscarLogin(email, senha);
+    const loginLojista = await buscarLogin(email, 0);
 
-    const validaSenha = await bcrypt.compare(senha, loginLojista.senha);
 
-    if (validaSenha) {
+    if (loginLojista == null) {
+      erro = "Usuário não encontrado";
+      res.render("login-loja", { erro });
+    }
+    else{
+      const validaSenha = await bcrypt.compare(senha, loginLojista.senha);
+      if (validaSenha) {
       req.session.loginLoja = true;
       res.cookie("idLoja", loginLojista.lojas_id);
       res.redirect("/");
     } else {
-      console.log("Usuário errado");
-    }
-  }
-};
+      erro = "Senha incorreta";
+      res.render("login-loja", { erro });
+    }}
+
+}
+}
 
 module.exports = PagesController;

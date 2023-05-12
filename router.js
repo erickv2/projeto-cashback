@@ -2,10 +2,11 @@ const express = require('express');
 const PagesController = require('./controllers/PagesController');
 var database = require('./public/js/database');
 const verificaSeLogado = require('./middlewares/verificaSeLogado');
+const verificaSeLogadoLoja = require('./middlewares/verificaSeLogadoLoja');
 
 const router = express.Router()
 
-router.get('/', PagesController.showIndex)
+router.get('/', verificaSeLogadoLoja, PagesController.showIndex)
 
 router.get('/cadastro/:id', PagesController.showCadastro)
 
@@ -110,13 +111,13 @@ router.get('/usuarios', function (request, response, next) {
 
 });
 
-router.get('/createdForm/finalizado', PagesController.showFinalizado)
+router.get('/cadastro/finalizado', PagesController.showFinalizado)
 
-router.get('/acumular', PagesController.showAcumular)
+router.get('/acumular', verificaSeLogadoLoja, PagesController.showAcumular)
 
-router.get('/resgatar', PagesController.ShowResgatar)
+router.get('/resgatar', verificaSeLogadoLoja, PagesController.ShowResgatar)
 
-router.get('/consultar', PagesController.showConsultar)
+router.get('/consultar', verificaSeLogadoLoja, PagesController.showConsultar)
 
 router.get('/erro', PagesController.showErro)
 
@@ -133,6 +134,6 @@ router.post('/store-acumular', PagesController.storeAcumular)
 
 router.post('/store-consultar', PagesController.storeConsultar)
 
-router.post('/createdForm/:id', PagesController.storeForm)
+router.post('/cadastro/:id', PagesController.storeCadastro)
 
 module.exports = router
