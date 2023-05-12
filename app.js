@@ -14,12 +14,17 @@ var cookieParser = require('cookie-parser')
 
 app.use(cookieParser())
 
-app.use(session({ secret: "ultrassecreto" }));
+app.use(session({
+    secret: "ultrassecreto",
+    resave: true,
+    saveUninitialized: true
+}
+));
 
 app.use(
 
     (req, res, next) => {
-        if(req.session.loginAdm){
+        if (req.session.loginAdm) {
             console.log("Administrador logado");
         } else {
             console.log("Administrador deslogado");
@@ -32,7 +37,7 @@ app.use(
 app.use(
 
     (req, res, next) => {
-        if(req.session.loginLoja){
+        if (req.session.loginLoja) {
             console.log("Lojista logado");
         } else {
             console.log("Lojista deslogado");

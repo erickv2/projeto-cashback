@@ -18,7 +18,7 @@ const {
 const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
 const telNumber = process.env.TWILIO_NUMBER;
-const idLoja = process.env.ID_LOJA;
+// const idLoja = process.env.ID_LOJA;
 
 let client = require("twilio")(accountSid, authToken, {
   lazyLoading: false,
@@ -40,7 +40,7 @@ async function buscaPorcento(id) {
   //busca a loja
   let loja = await Lojas.findOne({
     where: {
-      id: idLoja,
+      id: id,
     },
   });
 
@@ -121,8 +121,9 @@ async function buscarLogin(nomeUsuario, adm) {
   }
 }
 
-async function AcumularCompras(usuario, valorCompra) {
-  const porcentagem = await buscaPorcento();
+async function AcumularCompras(usuario, valorCompra, idLoja) {
+  console.log(idLoja)
+  const porcentagem = await buscaPorcento(idLoja);
 
   const tabelaCasback = await buscarCashback(usuario.id, idLoja, true);
 
@@ -175,8 +176,8 @@ async function AcumularCompras(usuario, valorCompra) {
   return valorCashback;
 }
 
-async function ResgatarCompras(usuario, valorCompra) {
-  const porcentagem = await buscaPorcento();
+async function ResgatarCompras(usuario, valorCompra, idLoja) {
+  const porcentagem = await buscaPorcento(idLoja);
   const tabelaCasback = await buscarCashback(usuario.id, idLoja, false);
 
   const id = usuario.id;
@@ -273,7 +274,8 @@ const PagesController = {
   showIndex: async (req, res) => {
     //checa conexão com banco de dados
     try {
-      porcentagem = await buscaPorcento();
+      const idLojaCookie = req.cookies.idLoja;
+      porcentagem = await buscaPorcento(idLojaCookie);
       console.log(porcentagem);
       return res.render("index");
     } catch (error) {
@@ -338,6 +340,8 @@ const PagesController = {
 
   storeAcumular: async (req, res) => {
     //pega os valores e trata
+    const idLojaCookie = req.cookies.idLoja;
+    console.log(idLojaCookie)
     const valorCompra = parseFloat(
       req.body.valorCompra.replace(/\./g, "").replace(",", ".")
     );
@@ -346,11 +350,12 @@ const PagesController = {
 
     const usuario = await buscarUsuario(telefone, true);
 
-    await AcumularCompras(await usuario, valorCompra);
+    await AcumularCompras(await usuario, valorCompra, idLojaCookie);
 
     res.redirect("/");
   },
   storeResgatar: async (req, res) => {
+    const idLojaCookie = req.cookies.idLoja;
     const valorCompra = parseFloat(
       req.body.valorCompra.replace(/\./g, "").replace(",", ".")
     );
@@ -373,22 +378,33 @@ const PagesController = {
       erro = "O saldo deste usuário é R$0,00";
       res.render("resgatar", { erro, resultado });
     } else {
-      resultado = await ResgatarCompras(await usuario, valorCompra);
+      resultado = await ResgatarCompras(await usuario, valorCompra, idLojaCookie);
+      res.render("resgatar", { erro, resultado });
     }
 
-    res.render("resgatar", { erro, resultado });
+    
   },
   storeConsultar: async (req, res) => {
     //pega o telefone e trata o dado
-    let telefone = req.body.telefone;
-    telefone = telefone.replace(new RegExp("[^0-9]", "g"), "");
+    const idLojaCookie = req.cookies.idLoja;
+    const telefone = req.body.telefone.replace(new RegExp("[^0-9]", "g"), "");
     usuario = await buscarUsuario(telefone);
     let erro = "";
     if (usuario == null) {
       erro = "Este usuário não existe";
       res.render("consultar", { erro });
     } else {
-      res.render("consultar", { erro, usuario: usuario });
+      cashback = await buscarCashback(usuario.id, idLojaCookie, false)
+      if (cashback == null){
+        erro = "Este usuário não tem cashback nessa loja";
+        res.render("consultar", { erro });
+      }
+      else{
+        const usuarioCashback = Object.assign({}, usuario, cashback)
+        const { updatedAt, lojas_id, id, usuarios_id, ...usuarioCashbackShow } = usuarioCashback
+        res.render("consultar", { erro, usuario: usuarioCashbackShow });
+      }
+      
     }
   },
   storeCadastro: async (req, res) => {
