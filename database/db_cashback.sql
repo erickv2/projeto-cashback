@@ -41,6 +41,19 @@ CREATE TABLE usuarios
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE avaliacoes
+(
+    lojas_id INT UNSIGNED,
+    usuarios_id INT UNSIGNED,
+    avaliacao TINYINT,
+    texto TEXT,
+	createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (lojas_id, usuarios_id),
+	CONSTRAINT fk_avalicao_lojas foreign key (lojas_id) REFERENCES lojas(id),
+	CONSTRAINT fk_avaliacao_usuarios foreign key (usuarios_id) REFERENCES usuarios(id)
+);
+
+
 CREATE TABLE compras
 (
 	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -65,7 +78,6 @@ CREATE TABLE cashback
     numero_de_compras INT DEFAULT 0,
     gasto_medio DECIMAL(9,2) DEFAULT 0,
     saldo_cashback DECIMAL(9,2) DEFAULT 0,
-    avaliacao_loja INT DEFAULT 0,
     cashback_resgatado DECIMAL(9,2) DEFAULT 0,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -73,7 +85,9 @@ CREATE TABLE cashback
     CONSTRAINT fk_cashback_usuarios foreign key (usuarios_id) REFERENCES usuarios(id)
 );
 
-INSERT INTO lojas (id, nome_loja, cashback_percent) VALUES (1, "açai da cidade", 0.05);
+INSERT INTO lojas (id, nome_loja, cashback_percent) VALUES 
+(1, "açai da cidade", 0.05),
+(2, "sorvete da cidade", 0.05);
 
 INSERT INTO usuarios (nome, data_nascimento, telefone, sexo, email) VALUES 
 ("Erick", "1997-03-17", "11910716382", "1", "erick@erick.com"),
@@ -90,22 +104,29 @@ INSERT INTO usuarios (nome, data_nascimento, telefone, sexo, email) VALUES
 ("Erick", "1997-03-17", "11910716379", "1", "erick@erick.com"),
 ("Erick", "1997-03-17", "11910726389", "1", "erick@erick.com");
 
-INSERT INTO cashback (lojas_id, usuarios_id, avaliacao_loja, saldo_cashback, total_cashback, total_gasto, numero_de_compras, gasto_medio) VALUES
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00"),
-("1", "1", "4", "11.00", "11.00", "11.00", "5", "500.00");
+INSERT INTO cashback (lojas_id, usuarios_id, saldo_cashback, total_cashback, total_gasto, numero_de_compras, gasto_medio) VALUES
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00"),
+("1", "1", "11.00", "11.00", "11.00", "5", "500.00");
+
+INSERT INTO avaliacoes (usuarios_id, lojas_id, avaliacao, texto, createdAt) VALUES
+(1, 1, 4, "Gostei bastante do produto, recomendo!", NOW()),
+(2, 2, 3, "O produto é bom, mas não atendeu todas as minhas expectativas", NOW()),
+(3, 2, 5, "Produto excelente, superou minhas expectativas", NOW()),
+(4, 1, 2, "Infelizmente não gostei do produto, não compraria novamente", NOW()),
+(5, 2, 4, "Produto muito bom, recomendo para quem está procurando algo de qualidade", NOW());
 
 INSERT INTO logins (nome_usuario, senha, lojas_id, adm) VALUES
 ("acaicaieiras", "$2b$10$DRNCIbY.eflzCZZsR/uJU.LxmUJuXohpFDc6PfWAszHiRUBb0UUka", "1", "0"),

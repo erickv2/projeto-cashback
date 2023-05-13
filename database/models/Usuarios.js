@@ -1,4 +1,6 @@
 const Compras = require('./Compras')
+const Avalicoes = require('./Avalicoes')
+const Cashback = require('./Cashback')
 
 module.exports = (sequelize, DataTypes) => {
     const Usuarios = sequelize.define('Usuarios', {
@@ -26,6 +28,13 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'usuarios_id',
             as: 'usuarios'
         })
+        Usuarios.belongsToMany(models.Lojas, {
+            as: 'avaliacoes',
+            through: 'avaliacoes',
+            foreignKey: 'usuarios_id',
+            otherKey: 'lojas_id',
+            timestamps: false
+            })
     }
 
     return Usuarios

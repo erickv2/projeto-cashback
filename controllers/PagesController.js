@@ -12,6 +12,7 @@ const {
   Lojas,
   Cashback,
   Logins,
+  Avaliacoes,
   sequelize,
 } = require("../database/models");
 
@@ -448,6 +449,20 @@ const PagesController = {
           },
         }
       );
+      
+      await Avaliacoes.update(
+          {
+           usuario_id: usuario.id,
+           lojas_id: 1,
+           avaliacao: req.body.rating,
+           texto: ''
+          },
+          {
+            where: {
+              id: usuario.id,
+            },
+          }
+      )
 
       res.redirect("/cadastro/finalizado");
     }

@@ -1,4 +1,5 @@
 const Lojas = require('./Lojas')
+const Avaliacoes = require('./Avalicoes')
 
 
 module.exports = (sequelize, DataTypes) => {
@@ -16,3 +17,4 @@ module.exports = (sequelize, DataTypes) => {
 
         return Logins
 }
+
