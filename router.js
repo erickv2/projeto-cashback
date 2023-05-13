@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.get('/', verificaSeLogadoLoja, PagesController.showIndex)
 
-router.get('/cadastro/:id', PagesController.showCadastro)
+router.get('/cadastro', PagesController.showCadastro)
 
 router.get('/adm/home', verificaSeLogado, PagesController.showAdm)
 
@@ -134,6 +134,6 @@ router.post('/store-acumular', PagesController.storeAcumular)
 
 router.post('/store-consultar', PagesController.storeConsultar)
 
-router.post('/cadastro/:id', PagesController.storeCadastro)
+router.post('/cadastro', PagesController.storeCadastro)
 
 module.exports = router

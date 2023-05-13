@@ -286,8 +286,6 @@ const PagesController = {
     return res.render("erro");
   },
   showCadastro: async (req, res) => {
-    let id = req.params.id;
-    console.log(id);
     let erro;
     return res.render("cadastro", { erro, id });
   },
@@ -408,8 +406,6 @@ const PagesController = {
     }
   },
   storeCadastro: async (req, res) => {
-    let id = req.params.id;
-    console.log(id);
 
     //tratando dados
     let data = req.body.dataNascimento;
@@ -424,7 +420,6 @@ const PagesController = {
     //encontra usuário
     const usuario = await buscarUsuario(telefone);
 
-    console.log(cpf);
     console.log(usuario);
 
     //se o usuário não existe
@@ -454,7 +449,7 @@ const PagesController = {
         }
       );
 
-      res.redirect("finalizado");
+      res.redirect("/cadastro/finalizado");
     }
   },
   AdmAuth: async (req, res) => {
