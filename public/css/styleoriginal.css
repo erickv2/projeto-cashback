@@ -1,5 +1,5 @@
 body {
-	background-color: #613c73;
+	background-color: #00a898;
 }
 
 form {
@@ -21,24 +21,16 @@ form {
 	border-radius: 50%;
 }
 
-
 #enviar {
 	font-weight: bold;
 	margin-bottom: 15px;
 	padding-left: 20px;
 	padding-right: 20px;
-	background-color: #613c73;
-	border-color: #FFF;
-}
-
-#enviar:hover{
-	background-color:#fff;
-	color:#613c73;
-	border-color: #613c73;
+	background-color: #00a898;
 }
 
 #enviarHidden {
-	background-color: #e1ba49;
+	background-color: #ffc00e;
 	font-weight: bold;
 	visibility: collapse;
 }
@@ -48,61 +40,34 @@ form {
 	margin-bottom: 15px;
 	padding-left: 20px;
 	padding-right: 20px;
-	background-color: #613c73;
-	border-color: #FFF;
-}
-#resgatar:hover{
-	background-color:#fff;
-	color:#613c73;
-	border-color: #613c73;
+	background-color: #00a898;
 }
 
 #consultar {
 	font-weight: bold;
 	margin-bottom: 20px;
-	background-color: #613c73;
-	border-color: #FFF;
+	background-color: #00a898;
 }
-#consultar:hover {
-	background-color:#fff;
-	color:#613c73;
-	border-color: #613c73;
-}
-
 
 #proximo {
-	background-color: #613c73;
+	background-color: #00a898;
 	font-weight: bold;
-	border-color: #fff;
 }
-#proximo:hover {
-	background-color:#fff;
-	color:#613c73;
-	border-color: #613c73;
-}
-
 
 #prev {
-	background-color: #613c73;
+	background-color: #00a898;
 	font-weight: bold;
-	border-color: #fff;
-	visibility: collapse;
-}
-#prev:hover {
-	background-color:#fff;
-	color:#613c73;
-	border-color: #613c73;
 	visibility: collapse;
 }
 
 #jatenhoconta {
-	color: #e1ba49;
+	color: #ffc00e;
 	text-decoration: none;
 	font-weight: bold;
 }
 
 #bemvindo {
-	color: #613c73;
+	color: #00a898;
 	font-weight: bold;
 }
 
@@ -114,21 +79,12 @@ form {
 	margin-right: 10px;
 }
 
-#proximo:hover img{
-	filter: invert(26%) sepia(24%) saturate(1223%) hue-rotate(236deg) brightness(94%) contrast(89%);
-}
-
-
 #prev img {
 	width: 17px;
 	height: 17px;
 	filter: invert(1);
 	margin-top: 4px;
 	margin-right: 10px;
-}
-
-#prev:hover img{
-	filter: invert(26%) sepia(24%) saturate(1223%) hue-rotate(236deg) brightness(94%) contrast(89%);
 }
 
 

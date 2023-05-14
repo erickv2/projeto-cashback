@@ -41,7 +41,7 @@
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="telefone" class="form-label">Telefone:</label>
                   <input type="text" class="form-control" id="telefone" name="telefone"
-                    placeholder="Digite seu telefone" pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})" autofocus
+                    placeholder="Digite seu telefone" pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})" inputmode="numeric" autofocus
                     required>
                 </div>
               </div>
@@ -49,7 +49,7 @@
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="cpf" class="form-label">CPF:</label>
                   <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF"
-                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" onblur="validarCPF(this.value)" autofocus required>
+                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" onblur="validarCPF(this.value)" inputmode="numeric" autofocus required>
                 </div>
               </div>
               <div class="carousel-item">
@@ -63,7 +63,7 @@
                 <div class="w-75 mb-5" id="formcarousel" required>
                   <label for="sexo" class="form-label">Sexo:</label>
                   <select class="form-control" id="sexo" name="sexo" required>
-                    <option selected value="">Selecione seu sexo</option>
+                    <option selected value="">Selecione seu sexo:</option>
                     <option value="1">Masculino</option>
                     <option value="2">Feminino</option>
                     <option value="3">Outros</option>
@@ -74,7 +74,7 @@
                 <div class="w-75 mb-5" id="formcarousel">
                   <label for="data_nascimento" class="form-label">Data de nascimento:</label>
                   <input type="text" class="form-control" id="data_nascimento" name="dataNascimento"
-                    pattern="[0-9]{2}\/[0-9]{2}\/[0-9]{4}$" placeholder="00/00/0000" autofocus required>
+                    pattern="[0-9]{2}\/[0-9]{2}\/[0-9]{4}$" placeholder="00/00/0000" inputmode="numeric" autofocus required>
                 </div>
               </div>
               <div class="carousel-item">
