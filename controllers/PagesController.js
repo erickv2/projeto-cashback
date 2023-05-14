@@ -405,8 +405,8 @@ const PagesController = {
       }
       else {
         const usuarioCashback = Object.assign({}, usuario, cashback)
-        const { updatedAt, lojas_id, id, usuarios_id, ...usuarioCashbackShow } = usuarioCashback
-        res.render("consultar", { erro, usuario: usuarioCashbackShow });
+        const { createdAt, updatedAt, lojas_id, id, usuarios_id, ...usuarioCashbackShow } = usuarioCashback
+        res.render("consultar-resultado", { erro, usuario: usuarioCashbackShow });
       }
 
     }
