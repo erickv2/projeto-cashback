@@ -423,6 +423,9 @@ const PagesController = {
 
     let cpf = req.body.cpf.replace(new RegExp("[^0-9]", "g"), "");
 
+    let texto = req.body.texto
+    console.log(texto)
+
     //encontra usuário
     const usuario = await buscarUsuario(telefone);
 
@@ -461,7 +464,7 @@ const PagesController = {
           usuarios_id: usuario.id,
           lojas_id: req.body.idLoja,
           avaliacao: req.body.rating,
-          texto: ' '
+          texto: texto
         },
       );
        res.redirect("/cadastro/finalizado");
