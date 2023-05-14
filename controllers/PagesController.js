@@ -27,10 +27,10 @@ let client = require("twilio")(accountSid, authToken, {
   maxRetries: 3,
 });
 
-async function enviaSMS(tel) {
+async function enviaSMS(tel, idLoja) {
   client.messages
     .create({
-      body: "Bem vindo ao sistema de cashback da loja nomedaloja. Por favor complete seu cadastro no link a seguir: https://localhost:3000/cadastro?idLoja=1",
+      body: `Bem vindo ao sistema de cashback da loja nomedaloja. Por favor complete seu cadastro no link a seguir: https://localhost:3000/cadastro?id=${idLoja}`,
       from: telNumber,
       to: `+55${tel}`,
     })
@@ -287,6 +287,7 @@ const PagesController = {
     return res.render("erro");
   },
   showCadastro: async (req, res) => {
+    let id = req.query.id;
     let erro;
     return res.render("cadastro", { erro, id });
   },
@@ -349,6 +350,10 @@ const PagesController = {
 
     const usuario = await buscarUsuario(telefone, true);
 
+    // if (usuario.cpf == null) {
+    //   enviaSMS(telefone)
+    // }
+
     await AcumularCompras(await usuario, valorCompra, idLojaCookie);
 
     res.redirect("/");
@@ -381,7 +386,7 @@ const PagesController = {
       res.render("resgatar", { erro, resultado });
     }
 
-    
+
   },
   storeConsultar: async (req, res) => {
     //pega o telefone e trata o dado
@@ -394,20 +399,20 @@ const PagesController = {
       res.render("consultar", { erro });
     } else {
       cashback = await buscarCashback(usuario.id, idLojaCookie, false)
-      if (cashback == null){
+      if (cashback == null) {
         erro = "Este usuário não tem cashback nessa loja";
         res.render("consultar", { erro });
       }
-      else{
+      else {
         const usuarioCashback = Object.assign({}, usuario, cashback)
         const { updatedAt, lojas_id, id, usuarios_id, ...usuarioCashbackShow } = usuarioCashback
         res.render("consultar", { erro, usuario: usuarioCashbackShow });
       }
-      
+
     }
   },
   storeCadastro: async (req, res) => {
-
+    let id = req.body.idLoja
     //tratando dados
     let data = req.body.dataNascimento;
     let partesData = data.split("/");
@@ -421,17 +426,18 @@ const PagesController = {
     //encontra usuário
     const usuario = await buscarUsuario(telefone);
 
+    console.log(cpf);
     console.log(usuario);
 
     //se o usuário não existe
     if (usuario == null) {
       erro = "Este telefone não é o mesmo que foi cadastrado na loja";
-      res.render("cadastro", { erro });
+      res.render("cadastro", { erro, id });
     }
     //se já cadastrou
     else if (usuario.cpf !== null) {
-      erro = "Já existe um usuário cadastrado com este CPF";
-      res.render("cadastro", { erro });
+      erro = "Já existe um usuário cadastrado neste telefone";
+      res.render("cadastro", { erro, id });
     } else {
       await Usuarios.update(
         {
@@ -441,7 +447,7 @@ const PagesController = {
           cpf: cpf,
           sexo: req.body.sexo,
           email: req.body.email,
-          avaliacao_loja: req.body.rating,
+          // avaliacao_loja: req.body.rating,
         },
         {
           where: {
@@ -449,22 +455,16 @@ const PagesController = {
           },
         }
       );
-      
-      await Avaliacoes.update(
-          {
-           usuario_id: usuario.id,
-           lojas_id: 1,
-           avaliacao: req.body.rating,
-           texto: ''
-          },
-          {
-            where: {
-              id: usuario.id,
-            },
-          }
-      )
 
-      res.redirect("/cadastro/finalizado");
+      await Avaliacoes.create(
+        {
+          usuarios_id: usuario.id,
+          lojas_id: req.body.idLoja,
+          avaliacao: req.body.rating,
+          texto: ' '
+        },
+      );
+       res.redirect("/cadastro/finalizado");
     }
   },
   AdmAuth: async (req, res) => {
@@ -476,17 +476,18 @@ const PagesController = {
       erro = "Usuário não encontrado";
       res.render("login-adm", { erro });
     }
-    else{
+    else {
       const validaSenha = await bcrypt.compare(senha, loginAdm.senha);
       if (validaSenha) {
-      req.session.loginAdm = true;
-      res.cookie("idLoja", loginAdm.lojas_id);
-      res.redirect("/adm/home");
-    } else {
-      erro = "Senha incorreta";
-      res.render("login-adm", { erro });
-    }}
-    
+        req.session.loginAdm = true;
+        res.cookie("idLoja", loginAdm.lojas_id);
+        res.redirect("/adm/home");
+      } else {
+        erro = "Senha incorreta";
+        res.render("login-adm", { erro });
+      }
+    }
+
   },
   LojistaAuth: async (req, res) => {
     const { email, senha } = req.body;
@@ -498,18 +499,19 @@ const PagesController = {
       erro = "Usuário não encontrado";
       res.render("login-loja", { erro });
     }
-    else{
+    else {
       const validaSenha = await bcrypt.compare(senha, loginLojista.senha);
       if (validaSenha) {
-      req.session.loginLoja = true;
-      res.cookie("idLoja", loginLojista.lojas_id);
-      res.redirect("/");
-    } else {
-      erro = "Senha incorreta";
-      res.render("login-loja", { erro });
-    }}
+        req.session.loginLoja = true;
+        res.cookie("idLoja", loginLojista.lojas_id);
+        res.redirect("/");
+      } else {
+        erro = "Senha incorreta";
+        res.render("login-loja", { erro });
+      }
+    }
 
-}
+  }
 }
 
 module.exports = PagesController;

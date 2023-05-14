@@ -1,5 +1,5 @@
 const Compras = require('./Compras')
-const Avalicoes = require('./Avalicoes')
+const Avaliacoes = require('./Avaliacoes')
 const Cashback = require('./Cashback')
 
 module.exports = (sequelize, DataTypes) => {
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'usuarios'
         })
         Usuarios.belongsToMany(models.Lojas, {
-            as: 'avaliacoes',
+            as: 'lojas',
             through: 'avaliacoes',
             foreignKey: 'usuarios_id',
             otherKey: 'lojas_id',

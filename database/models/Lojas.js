@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'cashback'
         })
         Lojas.belongsToMany(models.Usuarios, {
-            as: 'avaliacoes',
+            as: 'usuarios',
             through: 'avaliacoes',
             foreignKey: 'lojas_id',
             otherKey: 'usuarios_id',

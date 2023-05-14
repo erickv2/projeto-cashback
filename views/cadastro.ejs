@@ -14,7 +14,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
     integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" type="text/css" href="../../css/style.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body>
@@ -22,7 +22,8 @@
   <div class="container-fluid">
     <div class="row justify-content-center mt-5">
       <section class="col-12 colsm-6 col-md-4">
-        <form class="form-container" method="POST" action="/cadastro">
+        <form class="form-container" method="POST" action="/store-cadastro">
+          <input type="hidden" class="form-control" id="idLoja" name="idLoja" value="<%= id %>">
           <h4 class="text-center mt-4 mb-5" id="bemvindo">BEM VINDO</h4>
           <h6 class="text-center mt-4 mb-5" id="erro" name="erro"><%= erro %></h6>
           <div id="carouselExampleControls" class="carousel slide" data-bs-interval="false" data-bs-touch="false">
@@ -91,7 +92,7 @@
           <div class="d-flex align-items-center flex-column">
             <button class="btn btn-primary d-flex btn-block w-50 mb-5 justify-content-center" id="proximo"
               data-bs-target="#carouselExampleControls" data-bs-slide="next">
-              <img src="../../img/right-arrow.png" alt="" id="setadireita"> PRÓXIMO
+              <img src="/img/right-arrow.png" alt="" id="setadireita"> PRÓXIMO
 
             </button>
           </div>
@@ -106,7 +107,7 @@
             <button class="btn btn-primary d-flex btn-block w-50 mb-5 justify-content-center" id="prev"
               data-bs-target="#carouselExampleControls" data-bs-slide="prev">
 
-              <img src="../../img/left-arrow.png" alt="" id="setadireita"> VOLTAR
+              <img src="/img/left-arrow.png" alt="" id="setadireita"> VOLTAR
             </button>
         </form>
 

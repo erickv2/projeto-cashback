@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     const Cashback = sequelize.define('Cashback', {
         lojas_id: DataTypes.INTEGER,
         usuarios_id: DataTypes.INTEGER,
-        avaliacao_loja: DataTypes.INTEGER,
         saldo_cashback: DataTypes.DECIMAL(9, 2),
         total_cashback: DataTypes.DECIMAL(9, 2),
         cashback_resgatado: DataTypes.DECIMAL(9, 2),

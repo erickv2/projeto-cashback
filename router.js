@@ -134,6 +134,6 @@ router.post('/store-acumular', PagesController.storeAcumular)
 
 router.post('/store-consultar', PagesController.storeConsultar)
 
-router.post('/cadastro', PagesController.storeCadastro)
+router.post('/store-cadastro', PagesController.storeCadastro)
 
 module.exports = router

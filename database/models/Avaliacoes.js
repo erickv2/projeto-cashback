@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
         tableName: 'avaliacoes',
-        timestamps: true
+        timestamps: false
     })
-
+    Avaliacoes.removeAttribute('id')
         return Avaliacoes
 }

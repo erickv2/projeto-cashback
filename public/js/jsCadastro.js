@@ -14,6 +14,8 @@ const rating = document.querySelector('#rating');
 const erro = document.getElementById('erro');
 nextBtn.disabled = true;
 
+// const urlParams = new URLSearchParams(window.location.search);
+// const id = urlParams.get('id');
 
 // testando validação --------------------------------
 
