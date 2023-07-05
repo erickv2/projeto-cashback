@@ -62,7 +62,7 @@ router.get('/usuarios', function (request, response, next) {
             var total_records_with_filter = data[0].total;
 
             var query = `
-            SELECT usuarios.*, cashback.total_cashback, cashback.total_gasto, cashback.numero_de_compras, cashback.gasto_medio, cashback.saldo_cashback, cashback.avaliacao_loja, cashback.cashback_resgatado FROM usuarios
+            SELECT usuarios.*, cashback.total_cashback, cashback.total_gasto, cashback.numero_de_compras, cashback.gasto_medio, cashback.saldo_cashback, cashback.cashback_resgatado FROM usuarios
             LEFT OUTER JOIN cashback ON usuarios.id = cashback.usuarios_id
             WHERE (cashback.lojas_id = ${idLojaCookie}) AND (nome LIKE '%${search_value}%')
             ORDER BY ${column_name} ${column_sort_order} 

@@ -412,7 +412,8 @@ const PagesController = {
     }
   },
   storeCadastro: async (req, res) => {
-    let id = req.body.idLoja
+    // let id = req.body.idLoja
+    const idLojaCookie = req.cookies.idLoja;
     //tratando dados
     let data = req.body.dataNascimento;
     let partesData = data.split("/");
@@ -462,7 +463,7 @@ const PagesController = {
       await Avaliacoes.create(
         {
           usuarios_id: usuario.id,
-          lojas_id: req.body.idLoja,
+          lojas_id: idLojaCookie,
           avaliacao: req.body.rating,
           texto: texto
         },
