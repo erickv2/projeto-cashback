@@ -450,8 +450,7 @@ const PagesController = {
           telefone: telefone,
           cpf: cpf,
           sexo: req.body.sexo,
-          email: req.body.email,
-          // avaliacao_loja: req.body.rating,
+          email: req.body.email
         },
         {
           where: {
